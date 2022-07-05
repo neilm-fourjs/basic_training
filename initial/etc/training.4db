@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Schema gstVersion="40100" id="{14977a27-862d-4c81-b36b-6ed1d3c503b5}" version="4.0">
+  <AGSettings version="1.1">
+    <DynamicProperties version="4">
+      <DynamicProperty description="Associated label when generating form" initialValue="" isDefaultInherited="false" isHidden="false" label="Label" name="label" readOnly="false" type="TEXT"/>
+      <DynamicProperty description="Associated widget" editorInfo="contains:ButtonEdit|CheckBox|ComboBox|DateEdit|DateTimeEdit|Edit|FFImage|FFLabel|Field|Phantom|ProgressBar|RadioGroup|Slider|SpinEdit|TextEdit|TimeEdit" initialValue="Edit" isDefaultInherited="false" isHidden="false" label="Widget" name="widget" readOnly="false" type="ENUM"/>
+      <DynamicPropertyGroup collapsed="false" description="Formfied properties" label="Formfield" name="formfieldGroup" properties="label;widget"/>
+    </DynamicProperties>
+    <NodeInfos version="1">
+      <NodeInfo mimeType="db/column" properties="widget;label"/>
+    </NodeInfos>
+  </AGSettings>
+  <ExtractionSettings last="SQLite">
+    <ExtractionOptions casens="LowerCase" cvmeth="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" ignerr="true" systab="false" type="SQLite"/>
+  </ExtractionSettings>
+  <Table active="true" name="customers" status="U" uuid="db/table2">
+    <Column fglLength="8" fglType="0" name="cust_code" notNull="false" order="1" status="U" uuid="db/column8"/>
+    <Column fglLength="50" fglType="201" name="cust_name" notNull="false" order="2" status="U" uuid="db/column9"/>
+    <Column fglLength="50" fglType="201" name="cont_name" notNull="false" order="3" status="U" uuid="db/column22"/>
+    <Column fglLength="50" fglType="201" name="email" notNull="false" order="4" status="U" uuid="db/column23"/>
+    <Column fglLength="2" fglType="0" name="disc_code" notNull="false" order="5" status="U" uuid="db/column24"/>
+    <Column fglLength="3074" fglType="5" name="credit_limit" notNull="false" order="6" status="U" uuid="db/column25"/>
+    <Column fglLength="3074" fglType="5" name="total_invoices" notNull="false" order="7" status="U" uuid="db/column26"/>
+    <Column fglLength="3074" fglType="5" name="outstanding_amount" notNull="false" order="8" status="U" uuid="db/column27"/>
+    <Column fglLength="50" fglType="201" name="addr_line1" notNull="false" order="9" status="U" uuid="db/column10"/>
+    <Column fglLength="50" fglType="201" name="addr_line2" notNull="false" order="10" status="U" uuid="db/column11"/>
+    <Column fglLength="50" fglType="201" name="addr_line3" notNull="false" order="11" status="U" uuid="db/column12"/>
+    <Column fglLength="50" fglType="201" name="addr_line4" notNull="false" order="12" status="U" uuid="db/column13"/>
+    <Column fglLength="10" fglType="201" name="postal_sort" notNull="false" order="13" status="U" uuid="db/column15"/>
+    <Column fglLength="3" fglType="201" name="country" notNull="false" order="14" status="U" uuid="db/column14"/>
+  </Table>
+  <Table active="true" name="menus" status="U" uuid="db/table7">
+    <Column fglLength="4" fglType="6" name="m_key" notNull="false" order="1" status="U" uuid="db/column16"/>
+    <Column fglLength="8" fglType="0" name="m_name" notNull="false" order="2" status="U" uuid="db/column17"/>
+    <Column fglLength="50" fglType="201" name="m_text" notNull="false" order="3" status="U" uuid="db/column18"/>
+    <Column fglLength="1" fglType="0" name="m_type" notNull="false" order="4" status="U" uuid="db/column19"/>
+    <Column fglLength="8" fglType="0" name="m_child" notNull="false" order="5" status="U" uuid="db/column20"/>
+    <Column fglLength="50" fglType="201" name="m_cmd" notNull="false" order="6" status="U" uuid="db/column21"/>
+    <Index indexColumns="m_key" indexConstraint="primaryKey" name="primary_key_menus" status="U" uuid="db/index7"/>
+  </Table>
+  <Views ActiveView="View-1" showLabels="true">
+    <View Name="View-1">
+      <Layout>
+        <![CDATA[AAAAAgAAABIAZABiAC8AdABhAGIAbABlADIAAAAAAAAAAEA0AAAAAAAAAAAAAAAAAAABAAAAEgBkAGIALwB0AGEAYgBsAGUAN0B2UAAAAAAAQDoAAAAAAAA/YGJN0vGp/AE=]]>
+      </Layout>
+    </View>
+  </Views>
+</Schema>
