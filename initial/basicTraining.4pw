@@ -85,10 +85,12 @@
     <Application binaryName="menu" dependencies="14000,1986" id="18736" label="menu">
       <Configuration id="-1429969501" label="Menu"/>
       <File filePath="src/menu.4gl"/>
+      <File filePath="src/menu.per"/>
     </Application>
     <Application binaryName="menu_mnt" dependencies="-2072896198,14000,1986" id="-596818949" label="menu_mnt">
       <Configuration id="-1819640189" label="Configuration"/>
       <File filePath="src/menu_mnt.4gl"/>
+      <File filePath="src/menu_mnt.per"/>
     </Application>
     <Application binaryName="mk_db" dependencies="14000" id="-1001935388" label="mk_db">
       <Configuration id="959766607" label="Configuration"/>

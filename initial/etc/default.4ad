@@ -40,4 +40,6 @@ Property of Four Js*
   <ActionDefault name="nexttab" text="Next Folder Tab" acceleratorName="Control-Tab" contextMenu="no"/>
   <ActionDefault name="prevtab" text="Previous Folder Tab" acceleratorName="Control-Shift-Tab" contextMenu="no"/>
   <ActionDefault name="dialogtouched" validate="no" defaultView="no"  contextMenu="no"/>
+
+  <ActionDefault name="quit" validate="no" text="Quit" image="fa-power-off" acceleratorName="Escape" contextMenu="no"/>
 </ActionDefaultList>

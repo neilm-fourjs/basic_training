@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="ANSI_X3.4-1968"?>
-<!--
-Property of Four Js*
-(c) Copyright Four Js 1995, 2022. All Rights Reserved.
-* Trademark of Four Js Development Tools Europe Ltd
-  in the United States and elsewhere
-
-  This file can be modified by licensees according to the
-  product manual.
--->
-
 <StyleList>
+  <Style name="Table.menu">
+    <StyleAttribute name="headerHidden" value="yes" />
+    <StyleAttribute name="highlightCurrentRow" value="no" />
+    <StyleAttribute name="highlightCurrentCell" value="no"/>
+     <StyleAttribute name="fontSize" value="1.5em" />
+  </Style>
+  <Style name="Label.heading">
+     <StyleAttribute name="fontSize" value="2em" />
+  </Style>
+
   <Style name="Window">
      <StyleAttribute name="windowType" value="normal" />
   </Style>

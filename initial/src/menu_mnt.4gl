@@ -1,16 +1,36 @@
 IMPORT FGL fgldialog
 IMPORT FGL lib
 &include "schema.inc"
+DEFINE m_menus DYNAMIC ARRAY OF RECORD LIKE menus.*
 MAIN
+	DEFINE x      SMALLINT = 0
 	DEFINE l_menu RECORD LIKE menus.*
-
 	CALL lib.db_connect()
 
 	DECLARE cur CURSOR FOR SELECT * FROM menus
-	FOREACH cur INTO l_menu.*
-		DISPLAY l_menu.m_text
+	FOREACH cur INTO m_menus[x := x + 1].*
 	END FOREACH
+	CALL m_menus.deleteElement(x) -- delete the last empty row
 
-	CALL fgldialog.fgl_winMessage("Welcome","Menu Maintenance","information")
+	OPEN FORM f FROM "menu_mnt"
+	DISPLAY FORM f
+
+	DIALOG ATTRIBUTE(UNBUFFERED)
+		DISPLAY ARRAY m_menus TO arr.*
+			BEFORE ROW
+				LET l_menu.* = m_menus[arr_curr()].*
+		END DISPLAY
+		INPUT BY NAME l_menu.* ATTRIBUTE(WITHOUT DEFAULTS)
+		END INPUT
+		ON ACTION close EXIT DIALOG
+		ON ACTION quit EXIT DIALOG
+	END DIALOG
+
 	CALL lib.exit_program(0, "Program Finished")
 END MAIN
+--------------------------------------------------------------------------------------------------------------
+FUNCTION cb_menu_types(l_cb ui.ComboBox)
+	CALL l_cb.addItem("T", "Title")
+	CALL l_cb.addItem("M", "Menu")
+	CALL l_cb.addItem("F", "Program")
+END FUNCTION

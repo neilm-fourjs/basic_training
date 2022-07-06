@@ -31,9 +31,9 @@
   </Table>
   <Table active="true" name="menus" status="U" uuid="db/table7">
     <Column fglLength="4" fglType="6" name="m_key" notNull="false" order="1" status="U" uuid="db/column16"/>
-    <Column fglLength="8" fglType="0" name="m_name" notNull="false" order="2" status="U" uuid="db/column17"/>
-    <Column fglLength="50" fglType="201" name="m_text" notNull="false" order="3" status="U" uuid="db/column18"/>
-    <Column fglLength="1" fglType="0" name="m_type" notNull="false" order="4" status="U" uuid="db/column19"/>
+    <Column fglLength="1" fglType="0" name="m_type" notNull="false" order="2" status="U" uuid="db/column19"/>
+    <Column fglLength="8" fglType="0" name="m_name" notNull="false" order="3" status="U" uuid="db/column17"/>
+    <Column fglLength="50" fglType="201" name="m_text" notNull="false" order="4" status="U" uuid="db/column18"/>
     <Column fglLength="8" fglType="0" name="m_child" notNull="false" order="5" status="U" uuid="db/column20"/>
     <Column fglLength="50" fglType="201" name="m_cmd" notNull="false" order="6" status="U" uuid="db/column21"/>
     <Index indexColumns="m_key" indexConstraint="primaryKey" name="primary_key_menus" status="U" uuid="db/index7"/>
