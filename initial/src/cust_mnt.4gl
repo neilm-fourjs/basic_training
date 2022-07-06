@@ -6,6 +6,9 @@ MAIN
 
 	CALL lib.db_connect()
 
+	CALL ui.Interface.setText("Customers")
+	CALL ui.Interface.setImage("fa-users")
+
 	DECLARE cur CURSOR FOR SELECT * FROM customers
 	FOREACH cur INTO l_cust.*
 		DISPLAY l_cust.cust_name

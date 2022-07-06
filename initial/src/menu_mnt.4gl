@@ -5,7 +5,11 @@ DEFINE m_menus DYNAMIC ARRAY OF RECORD LIKE menus.*
 MAIN
 	DEFINE x      SMALLINT = 0
 	DEFINE l_menu RECORD LIKE menus.*
+
 	CALL lib.db_connect()
+
+	CALL ui.Interface.setText("Menu Maint")
+	CALL ui.Interface.setImage("fa-cog")
 
 	DECLARE cur CURSOR FOR SELECT * FROM menus
 	FOREACH cur INTO m_menus[x := x + 1].*

@@ -18,6 +18,9 @@ MAIN
 
 	CALL lib.db_connect()
 
+	CALL ui.Interface.setText("Menu")
+	CALL ui.Interface.setImage("fa-navicon")
+
 	DECLARE cur CURSOR FOR SELECT * FROM menus
 	FOREACH cur INTO m_menus[x := x + 1].*
 		CASE m_menus[x].type
@@ -39,7 +42,7 @@ MAIN
 		BEFORE ROW
 			IF m_menu[arr_curr()].m_text IS NOT NULL THEN
 				IF m_menu[arr_curr()].type = "F" THEN
-					RUN SFMT("fglrun %1", m_menu[arr_curr()].m_cmd)
+					RUN SFMT("fglrun %1", m_menu[arr_curr()].m_cmd) WITHOUT WAITING
 				END IF
 				IF m_menu[arr_curr()].type = "M" THEN
 					CALL getMenu(m_menu[arr_curr()].m_child)
