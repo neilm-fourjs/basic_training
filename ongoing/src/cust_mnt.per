@@ -1,0 +1,63 @@
+---------------------------------------------------------------------------------- 
+-- File created from /opt/fourJs/all/my_github/basicTraining/ongoing/src/cust_mnt.4fd by Genero Studio
+-- WARNING! All changes made in this file will be lost!
+----------------------------------------------------------------------------------
+
+SCHEMA training
+
+TOOLBAR
+	ITEM quit
+	ITEM lookup
+END -- TB
+
+LAYOUT (TEXT=%"Customers")
+GRID training1
+{
+
+[customers_code|cust_cod]        [customers_name|cust_name                     ]
+[customers_cont|cont_name        |customers_emai|email                         ]
+[""]
+[customers_disc|di]              [customers_cred|credit_limit  ]
+[customers_tota|total_invoices]  [customers_outs|outstanding_am]
+[""]
+[customers_addr|addr_line1                    ]
+               [addr_line2                    ]
+               [addr_line3                    ]
+               [addr_line4                    ]
+[customers_post|postal_sor][customers_coun|cou]
+}
+END -- training1
+END -- form
+
+TABLES
+customers
+
+ATTRIBUTES
+LABEL customers_code:customers_cust_code_label1, TEXT=%"Code:", JUSTIFY=RIGHT;
+LABEL customers_name:customers_cust_name_label1, TEXT=%"Name:", JUSTIFY=RIGHT;
+LABEL customers_cont:customers_cont_name_label1, TEXT=%"Contact:", JUSTIFY=RIGHT;
+LABEL customers_emai:customers_email_label1, TEXT=%"Email:", JUSTIFY=RIGHT;
+LABEL customers_disc:customers_disc_code_label1, TEXT=%"Disc Code:", JUSTIFY=RIGHT;
+LABEL customers_cred:customers_credit_limit_label1, TEXT=%"Credit Limit:", JUSTIFY=RIGHT;
+LABEL customers_tota:customers_total_invoices_label1, TEXT=%"Invoice:", JUSTIFY=RIGHT;
+LABEL customers_outs:customers_outstanding_amount_label1, TEXT=%"Outstanding:", JUSTIFY=RIGHT;
+LABEL customers_addr:customers_addr_line1_label1, TEXT=%"Address", JUSTIFY=RIGHT;
+LABEL customers_post:customers_postal_sort_label1, TEXT=%"Post Code:", JUSTIFY=RIGHT;
+LABEL customers_coun:customers_country_label1, TEXT=%"Country:", JUSTIFY=RIGHT;
+
+
+EDIT cust_cod=customers.cust_code, SCROLL;
+EDIT cust_name=customers.cust_name, SCROLL;
+EDIT cont_name=customers.cont_name, SCROLL;
+EDIT email=customers.email, SCROLL;
+EDIT di=customers.disc_code, SCROLL;
+EDIT credit_limit=customers.credit_limit, SCROLL;
+EDIT total_invoices=customers.total_invoices, SCROLL;
+EDIT outstanding_am=customers.outstanding_amount, SCROLL;
+EDIT addr_line1=customers.addr_line1, SCROLL;
+EDIT addr_line2=customers.addr_line2, SCROLL;
+EDIT addr_line3=customers.addr_line3, SCROLL;
+EDIT addr_line4=customers.addr_line4, SCROLL;
+EDIT postal_sor=customers.postal_sort, SCROLL;
+EDIT cou=customers.country, SCROLL;
+
