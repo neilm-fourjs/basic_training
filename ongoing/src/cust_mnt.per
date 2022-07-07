@@ -7,7 +7,22 @@ SCHEMA training
 
 TOOLBAR
 	ITEM quit
+	SEPARATOR
+	ITEM accept
+	ITEM cancel
+	SEPARATOR
 	ITEM lookup
+	ITEM SEARCH
+	ITEM first
+	ITEM previous
+	ITEM next
+	ITEM last
+	SEPARATOR
+	ITEM insert
+	ITEM update
+	ITEM delete
+	SEPARATOR
+	ITEM about
 END -- TB
 
 LAYOUT (TEXT=%"Customers")
@@ -25,6 +40,8 @@ GRID training1
                [addr_line3                    ]
                [addr_line4                    ]
 [customers_post|postal_sor][customers_coun|cou]
+[""]
+[stat                                         ]
 }
 END -- training1
 END -- form
@@ -46,18 +63,19 @@ LABEL customers_post:customers_postal_sort_label1, TEXT=%"Post Code:", JUSTIFY=R
 LABEL customers_coun:customers_country_label1, TEXT=%"Country:", JUSTIFY=RIGHT;
 
 
-EDIT cust_cod=customers.cust_code, SCROLL;
+EDIT cust_cod=customers.cust_code, SCROLL, NOT NULL, UPSHIFT, REQUIRED;
 EDIT cust_name=customers.cust_name, SCROLL;
 EDIT cont_name=customers.cont_name, SCROLL;
 EDIT email=customers.email, SCROLL;
-EDIT di=customers.disc_code, SCROLL;
+EDIT di=customers.disc_code, SCROLL, UPSHIFT;
 EDIT credit_limit=customers.credit_limit, SCROLL;
-EDIT total_invoices=customers.total_invoices, SCROLL;
-EDIT outstanding_am=customers.outstanding_amount, SCROLL;
+EDIT total_invoices=customers.total_invoices, SCROLL, NOENTRY;
+EDIT outstanding_am=customers.outstanding_amount, SCROLL, NOENTRY;
 EDIT addr_line1=customers.addr_line1, SCROLL;
 EDIT addr_line2=customers.addr_line2, SCROLL;
 EDIT addr_line3=customers.addr_line3, SCROLL;
 EDIT addr_line4=customers.addr_line4, SCROLL;
-EDIT postal_sor=customers.postal_sort, SCROLL;
-EDIT cou=customers.country, SCROLL;
+EDIT postal_sor=customers.postal_sort, SCROLL, UPSHIFT;
+EDIT cou=customers.country, SCROLL, UPSHIFT;
 
+LABEL stat = FORMONLY.stat, SIZEPOLICY=DYNAMIC;

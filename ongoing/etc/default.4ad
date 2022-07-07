@@ -10,12 +10,12 @@ Property of Four Js*
 -->
 
 <ActionDefaultList>
-  <ActionDefault name="accept" text="OK" acceleratorName="Return" acceleratorName2="Enter" contextMenu="no"/>
-  <ActionDefault name="cancel" validate="no" text="Cancel" acceleratorName="Escape" contextMenu="no"/>
-  <ActionDefault name="insert" text="Insert" acceleratorName="F3" contextMenu="no"/>
+  <ActionDefault name="accept" image="fa-check" text="OK" acceleratorName="Return" acceleratorName2="Enter" contextMenu="no"/>
+  <ActionDefault name="cancel" image="fa-close" text="Cancel" validate="no" acceleratorName="Escape" contextMenu="no"/>
+  <ActionDefault name="insert" image="fa-plus" text="Insert" acceleratorName="F3" contextMenu="no"/>
   <ActionDefault name="append" text="Append" acceleratorName="Control-F3" contextMenu="no"/>
-  <ActionDefault name="update" text="Update" acceleratorName="F2" contextMenu="no"/>
-  <ActionDefault name="delete" validate="no" text="Delete" acceleratorName="F4" contextMenu="no"/>
+  <ActionDefault name="update" image="fa-pencil" text="Update" acceleratorName="F2" contextMenu="no"/>
+  <ActionDefault name="delete" image="fa-trash" text="Delete" validate="no" acceleratorName="F4" contextMenu="no"/>
   <ActionDefault name="help" validate="no" text="Help" acceleratorName="F1" contextMenu="no"/>
   <ActionDefault name="close" validate="no" text="Close" acceleratorName="Alt-F4" defaultView="no" contextMenu="no"/>
   <ActionDefault name="interrupt" text="Interrupt" contextMenu="no"/>
@@ -41,6 +41,8 @@ Property of Four Js*
   <ActionDefault name="prevtab" text="Previous Folder Tab" acceleratorName="Control-Shift-Tab" contextMenu="no"/>
   <ActionDefault name="dialogtouched" validate="no" defaultView="no"  contextMenu="no"/>
 
-  <ActionDefault name="lookup" validate="no" text="LookUp" image="fa-search" acceleratorName="f7" contextMenu="no"/>
+  <ActionDefault name="about" validate="no" text="About" image="fa-info" acceleratorName="f1" contextMenu="no"/>
+  <ActionDefault name="search" validate="no" text="Search" image="fa-search" acceleratorName="f7" contextMenu="no"/>
+  <ActionDefault name="lookup" validate="no" text="LookUp" image="fa-list" acceleratorName="f7" contextMenu="no"/>
   <ActionDefault name="quit" validate="no" text="Quit" image="fa-power-off" acceleratorName="Escape" contextMenu="no"/>
 </ActionDefaultList>

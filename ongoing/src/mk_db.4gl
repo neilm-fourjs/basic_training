@@ -71,7 +71,8 @@ FUNCTION insertTestData()
 	CALL insMenu(0, "F", "maint", "Menu Maintenance", "", "menu_mnt", "")
 	CALL insMenu(0, "F", "maint", "Customer Maintenance", "", "cust_mnt", "")
 	CALL insMenu(0, "T", "enq", "Enquiry Programs", "main", "", "")
-	CALL insMenu(0, "F", "enq", "Customer Enquiry", "", "cust_mnt", "E")
+	CALL insMenu(0, "F", "enq", "Customer Enquiry 1", "", "cust_mnt", "E")
+	CALL insMenu(0, "F", "enq", "Customer Enquiry 2", "", "cust_mnt", "e")
 
 	CALL lib.log(1, "Loading Customers ...")
 	LOAD FROM "../etc/customers.unl" INSERT INTO customers

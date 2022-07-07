@@ -60,6 +60,9 @@ MAIN
 				END CASE
 			END IF
 			CALL DIALOG.setCurrentRow("menu", m_menu.getLength() + 1)
+		ON ACTION quit EXIT DISPLAY
+		ON ACTION close EXIT DISPLAY
+		ON ACTION about CALL lib.about()
 	END DISPLAY
 	CALL lib.exit_program(0, "Program Finished")
 END MAIN

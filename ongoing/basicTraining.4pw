@@ -69,8 +69,8 @@
   <PlatformList version="1.0"/>
   <Group environment="value:DBNAME=../etc/training.db" id="75644415" label="basicTraining" language="Genero">
     <Application binaryName="cust_mnt" dependencies="14000" id="1257009096" label="cust_mnt">
-      <Configuration commandLineArguments="M C0030" id="1581899846" label="MDI"/>
-      <Configuration commandLineArguments="S C0030" id="-956009109" label="SDI"/>
+      <Configuration commandLineArguments="M" id="1581899846" label="MDI"/>
+      <Configuration commandLineArguments="S e" id="-956009109" label="SDI"/>
       <File filePath="src/cust_mnt.4gl"/>
       <File filePath="src/cust_mnt.per"/>
     </Application>
