@@ -88,6 +88,7 @@
     </Library>
     <Application binaryName="menu" dependencies="14000,1986,-2072896198" id="18736" label="menu">
       <Configuration commandLineArguments="M" id="-1429969501" label="Menu ( MDI )"/>
+      <Configuration commandLineArguments="M menu_sg" id="2021398667" label="Menu ( MDI ) SG"/>
       <Configuration commandLineArguments="S" id="-1610527020" label="Menu ( SDI )"/>
       <File filePath="src/menu.4gl"/>
       <File filePath="src/menu.per"/>

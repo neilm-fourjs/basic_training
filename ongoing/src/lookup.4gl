@@ -123,7 +123,7 @@ PUBLIC FUNCTION (this lookup) lookup() RETURNS STRING
 		LET this.fields[x].type = this.sqlQueryHandle.getResultType(x)
 		LET this.dsp_fields[x].name = "dsp_" || this.fields[x].name
 		LET this.dsp_fields[x].type = this.fields[x].type
-		LET this.dsp_fields[x].width = 10 -- g2_db.g2_getColumnLength(this.fields[x].type, this.maxColWidth)
+		LET this.dsp_fields[x].width = this.getColumnLength(this.fields[x].type)
 		GL_DBGMSG(2, "g2_lookup2:" || x || " Name:" || this.fields[x].name || " Type:" || this.fields[x].type)
 	END FOR
 	LET this.totalFields = this.fields.getLength()
@@ -589,4 +589,39 @@ PRIVATE FUNCTION (this lookup) update(l_key STRING) RETURNS BOOLEAN
 	END FOR
 
 	RETURN FALSE -- int_flag
+END FUNCTION
+----------------------------------------------------------------------------------------------------
+#+ @param s_typ Type
+#+ @return Length from type or defaults to 10
+FUNCTION (this lookup) getColumnLength(l_type STRING) RETURNS SMALLINT
+  DEFINE x, y, l_size SMALLINT
+  LET l_size = 1 -- default
+  CASE l_type
+    WHEN "SMALLINT"
+      LET l_size = 5
+    WHEN "SERIAL"
+      LET l_size = 10
+    WHEN "INTEGER"
+      LET l_size = 10
+    WHEN "FLOAT"
+      LET l_size = 12
+    WHEN "DATE"
+      LET l_size = 10
+  END CASE
+  LET x = l_type.getIndexOf("(", 1)
+  IF x > 1 THEN
+    LET y = l_type.getIndexOf(",", 1)
+    IF y = 0 THEN
+      LET y = l_type.getIndexOf(")", 1)
+    END IF
+    LET l_size = l_type.subString(x + 1, y - 1)
+  END IF
+  IF l_type.subString(1,4) = "CHAR" OR l_type.subString(1,7) = "VARCHAR" THEN
+		LET l_size = l_size / 3 -- sqlite db seems to creates the column 3 x wider to allow for uniqcode chars!
+	END IF
+  IF this.maxColWidth > 0 AND l_size > this.maxColWidth THEN
+    LET l_size = this.maxColWidth
+  END IF
+	DISPLAY SFMT("Type: %1 Size: %2", l_type, l_size)
+  RETURN l_size
 END FUNCTION

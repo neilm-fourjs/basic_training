@@ -22,6 +22,7 @@ MAIN
 		DISPLAY ARRAY m_menus TO arr.*
 			BEFORE ROW
 				LET l_menu.* = m_menus[arr_curr()].*
+				DISPLAY l_menu.m_img TO img
 		END DISPLAY
 		INPUT BY NAME l_menu.* ATTRIBUTE(WITHOUT DEFAULTS)
 		END INPUT

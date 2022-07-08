@@ -8,19 +8,25 @@ MAIN
 	DEFINE x     SMALLINT
 	DEFINE l_cmd STRING
 
-	CALL lib.init()
-	CALL lib.db_connect()
-
 	CALL ui.Interface.setText("Menu")
 	CALL ui.Interface.setImage("fa-navicon")
+
+	CALL lib.init()
+	CALL lib.db_connect()
 
 	DECLARE cur CURSOR FOR SELECT * FROM menus
 	FOREACH cur INTO m_menus[x := x + 1].*
 	END FOREACH
 	CALL m_menus.deleteElement(x) -- delete the last empty row
 
-	OPEN FORM f FROM "menu"
+	IF base.Application.getArgument(2) MATCHES "menu*" THEN
+		OPEN FORM f FROM base.Application.getArgument(2)
+	ELSE
+		OPEN FORM f FROM "menu"
+	END IF
 	DISPLAY FORM f
+	CALL ui.Window.getCurrent().setText(SFMT("Menu - %1", TODAY))
+	CALL ui.Window.getCurrent().setImage("fa-navicon")
 
 	CALL getMenu("main")
 	DISPLAY ARRAY m_menu TO menu.* ATTRIBUTE(UNBUFFERED, FOCUSONFIELD, CANCEL = FALSE, ACCEPT = FALSE)
@@ -31,22 +37,24 @@ MAIN
 			IF m_menu[x].m_text IS NOT NULL THEN
 				CALL lib.log(1, SFMT("Before row %1 '%2'", x, m_menu[x].m_text))
 				CASE m_menu[x].m_type
-				  WHEN "F"
-						LET l_cmd =
-								SFMT("fglrun %1 %2 %3", m_menu[x].m_cmd, IIF(lib.m_mdi, "M", "S"), m_menu[x].m_args)
+					WHEN "F"
+						LET l_cmd = SFMT("fglrun %1 %2 %3", m_menu[x].m_cmd, IIF(lib.m_mdi, "M", "S"), m_menu[x].m_args)
 						RUN l_cmd WITHOUT WAITING
 					WHEN "M"
 						CALL getMenu(m_menu[arr_curr()].m_child)
-				  WHEN "Q"
+					WHEN "Q"
 						EXIT DISPLAY
-				  WHEN "B"
+					WHEN "B"
 						CALL getMenu(m_menu_back)
 				END CASE
 			END IF
 			CALL DIALOG.setCurrentRow("menu", m_menu.getLength() + 1)
-		ON ACTION quit EXIT DISPLAY
-		ON ACTION close EXIT DISPLAY
-		ON ACTION about CALL lib.about()
+		ON ACTION quit
+			EXIT DISPLAY
+		ON ACTION close
+			EXIT DISPLAY
+		ON ACTION about
+			CALL lib.about()
 	END DISPLAY
 	CALL lib.exit_program(0, "Program Finished")
 END MAIN
@@ -58,6 +66,7 @@ FUNCTION getMenu(l_name STRING) RETURNS()
 	FOR x = 1 TO m_menus.getLength()
 		IF m_menus[x].m_name = l_name THEN
 			IF m_menus[x].m_type = "T" THEN
+				CALL ui.Interface.setText(m_menus[x].m_text)
 				DISPLAY m_menus[x].m_text TO menu_title
 			ELSE
 				LET m_menu[y := y + 1].* = m_menus[x].*

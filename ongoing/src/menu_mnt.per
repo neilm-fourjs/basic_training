@@ -21,7 +21,7 @@ GRID
 [a|a001  |a002               ]  [l003        |f003  ]
 [a|a001  |a002               ]  [l004        |f004                                       ]
 [a|a001  |a002               ]  [l005        |f005                                       ]
-[a|a001  |a002               ]  [l006        |f006                                       ]
+[a|a001  |a002               ]  [l006        |f006                                    |f ]
 [a|a001  |a002               ]  [l007        |f007  ]
 [a|a001  |a002               ]  [l008        |f008                                       ]
 [a|a001  |a002               ]  [l009        |f009                                       ]
@@ -59,6 +59,8 @@ f006 = FORMONLY.m_img;
 f007 = FORMONLY.m_child;
 f008 = FORMONLY.m_cmd;
 f009 = FORMONLY.m_args;
+
+IMAGE f = FORMONLY.img, STYLE="bigicon", AUTOSCALE;
 
 INSTRUCTIONS
 SCREEN RECORD arr ( FORMONLY.a01 THRU FORMONLY.a09 )

@@ -38,7 +38,7 @@ END FUNCTION
 FUNCTION init() RETURNS()
 	DEFINE l_contName STRING
 	DEFINE n          om.DomNode
-	LET m_debug_lev = 1
+	LET m_debug_lev = 2
 	CALL log(1, SFMT("Program %1 Started - debug: %2", base.Application.getProgramName(), m_debug_lev))
 	IF base.Application.getArgument(1) = "M" THEN
 		IF base.Application.getProgramName() = "menu" THEN
