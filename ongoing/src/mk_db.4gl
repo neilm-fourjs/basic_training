@@ -21,6 +21,8 @@ MAIN
 		CALL c.close()
 	END IF
 
+	LET lib.m_debug_lev = 1
+	CALL lib.log(0, "mk_db started ...")
 	CALL lib.db_connect()
 
 	LET m_tabs[1] = "menus"
@@ -50,7 +52,15 @@ END FUNCTION
 FUNCTION createTables()
 	CALL lib.log(1, "Create Menus ...")
 	CREATE TABLE menus(
-			m_key SERIAL, m_type CHAR(1), m_name VARCHAR(8), m_text VARCHAR(50), m_child VARCHAR(8), m_cmd VARCHAR(50), m_args VARCHAR(50))
+			m_key SERIAL, 
+			m_type CHAR(1), 
+			m_name VARCHAR(8), 
+			m_text VARCHAR(50), 
+			m_desc VARCHAR(50),
+			m_img  VARCHAR(25),
+			m_child VARCHAR(8), 
+			m_cmd VARCHAR(50), 
+			m_args VARCHAR(50))
 
 	CALL lib.log(1, "Create customers ...")
 	CREATE TABLE customers(
@@ -64,15 +74,15 @@ END FUNCTION
 FUNCTION insertTestData()
 
 	CALL lib.log(1, "Loading Menus ...")
-	CALL insMenu(0, "T", "main", "Main Menu", "", "", "")
-	CALL insMenu(0, "M", "main", "Maintenance Programs", "maint", "", "")
-	CALL insMenu(0, "M", "main", "Enquiry Programs", "enq", "", "")
-	CALL insMenu(0, "T", "maint", "Maintenance Programs", "main", "", "")
-	CALL insMenu(0, "F", "maint", "Menu Maintenance", "", "menu_mnt", "")
-	CALL insMenu(0, "F", "maint", "Customer Maintenance", "", "cust_mnt", "")
-	CALL insMenu(0, "T", "enq", "Enquiry Programs", "main", "", "")
-	CALL insMenu(0, "F", "enq", "Customer Enquiry 1", "", "cust_mnt", "E")
-	CALL insMenu(0, "F", "enq", "Customer Enquiry 2", "", "cust_mnt", "e")
+	CALL insMenu(0, "T", "main", "Main Menu", "", "", "", "", "")
+	CALL insMenu(0, "M", "main", "Maintenance Programs", "Sub menu", "fa-arrow-right", "maint", "", "")
+	CALL insMenu(0, "M", "main", "Enquiry Programs", "Sub menu", "fa-arrow-right", "enq", "", "")
+	CALL insMenu(0, "T", "maint", "Maintenance Programs", "", "", "main", "", "")
+	CALL insMenu(0, "F", "maint", "Menu Maintenance", "Maintain the menu table", "fa-cog", "", "menu_mnt", "")
+	CALL insMenu(0, "F", "maint", "Customer Maintenance", "Add/Update/Delete customers", "fa-users", "", "cust_mnt", "")
+	CALL insMenu(0, "T", "enq", "Enquiry Programs", "", "", "main", "", "")
+	CALL insMenu(0, "F", "enq", "Customer Enquiry 1", "Enquiry on customers", "fa-users", "", "cust_mnt", "E")
+	CALL insMenu(0, "F", "enq", "Customer Enquiry 2", "Enquiry on customers from list", "fa-users", "", "cust_mnt", "e")
 
 	CALL lib.log(1, "Loading Customers ...")
 	LOAD FROM "../etc/customers.unl" INSERT INTO customers

@@ -91,6 +91,7 @@
       <Configuration commandLineArguments="S" id="-1610527020" label="Menu ( SDI )"/>
       <File filePath="src/menu.4gl"/>
       <File filePath="src/menu.per"/>
+      <File filePath="src/menu_sg.per"/>
     </Application>
     <Application binaryName="menu_mnt" dependencies="-2072896198,14000,1986" id="-596818949" label="menu_mnt">
       <Configuration id="-1819640189" label="Configuration"/>
