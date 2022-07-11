@@ -8,6 +8,7 @@ MAIN
 	DEFINE l_mode       CHAR(1)
 	DEFINE l_lookup     lookup.lookup
 	DEFINE l_rowActions STRING
+	DEFINE l_form       ui.Form
 
 	CALL lib.init()
 	CALL lib.db_connect()
@@ -19,6 +20,7 @@ MAIN
 
 	LET l_mode           = base.Application.getArgument(2)
 	LET m_cust.cust_code = base.Application.getArgument(3)
+	IF l_mode IS NULL THEN LET l_mode = "." END IF
 
 	IF m_cust.cust_code IS NOT NULL THEN
 		CALL ui.Interface.setText(SFMT("Cust: %1", m_cust.cust_code))
@@ -45,6 +47,17 @@ MAIN
 	IF l_mode = "E" THEN
 		LET m_cust.cust_code = l_lookup.lookup()
 	END IF
+	IF l_mode = "X" THEN
+		LET l_form = ui.Window.getCurrent().getForm()
+		CALL l_form.setElementHidden("lookup", TRUE)
+		CALL l_form.setElementHidden("search", TRUE)
+		CALL l_form.setElementHidden("first", TRUE)
+		CALL l_form.setElementHidden("last", TRUE)
+		CALL l_form.setElementHidden("next", TRUE)
+		CALL l_form.setElementHidden("previous", TRUE)
+	END IF
+	LET l_rowActions = "update|delete"
+	DISPLAY "Actions: ", l_rowActions
 
 	LET m_cnt = 0
 	LET m_row = 0
@@ -54,10 +67,10 @@ MAIN
 		LET m_row = 1
 	END IF
 
-	LET l_rowActions = "update|delete"
-
 	MENU
 		BEFORE MENU
+			CALL DIALOG.setActionActive("lookup", (l_mode!="X"))
+			CALL DIALOG.setActionActive("search", (l_mode!="X"))
 			CALL lib.setActions(DIALOG, m_cnt, m_row, l_rowActions)
 		ON ACTION lookup
 			LET m_cust.cust_code = l_lookup.lookup()
@@ -98,6 +111,9 @@ MAIN
 			EXIT MENU
 		ON ACTION quit
 			EXIT MENU
+
+		COMMAND "Test" MESSAGE "Test"
+		ON ACTION temp MESSAGE "Temp"
 	END MENU
 
 	CALL lib.exit_program(0, "Program Finished")
@@ -122,10 +138,12 @@ FUNCTION doInput(l_new BOOLEAN) RETURNS()
 				CALL DIALOG.setFieldActive("cust_code", FALSE)
 			END IF
 		AFTER FIELD cust_code
-			SELECT * FROM customers WHERE cust_code = l_cust.cust_code
-			IF STATUS != NOTFOUND THEN
-				ERROR SFMT("Customer code '%1' already exist!", l_cust.cust_code)
-				NEXT FIELD cust_code
+			IF l_new THEN
+				SELECT * FROM customers WHERE cust_code = l_cust.cust_code
+				IF STATUS != NOTFOUND THEN
+					ERROR SFMT("Customer code '%1' already exist!", l_cust.cust_code)
+					NEXT FIELD cust_code
+				END IF
 			END IF
 	END INPUT
 	IF int_flag THEN

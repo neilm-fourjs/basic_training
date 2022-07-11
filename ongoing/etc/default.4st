@@ -51,11 +51,13 @@
 	<Style name="Label.menuline1">
 		<StyleAttribute name="fontSize" value="1.5em" />
 		<StyleAttribute name="textColor" value="darkblue" />
+		<StyleAttribute name="fontWeight" value="normal" />
 	</Style>
 	<Style name="Label.menuline2">
 		<StyleAttribute name="fontSize" value="1em" />
 		<StyleAttribute name="fontStyle" value="italic" />
 		<StyleAttribute name="textColor" value="grey" />
+		<StyleAttribute name="fontWeight" value="normal" />
 	</Style>
 
 	<Style name="ScrollGrid.menu">
@@ -65,6 +67,15 @@
 	<Style name="Label.heading">
 		<StyleAttribute name="fontSize" value="2em" />
 		<StyleAttribute name="fontWeight" value="bold" />
+	</Style>
+
+	<Style name="Label">
+		<StyleAttribute name="textColor" value="darkblue" />
+		<StyleAttribute name="fontWeight" value="bold" />
+	</Style>
+
+	<Style name="Grid">
+		<StyleAttribute name="fontSize" value="1.2em" />
 	</Style>
 
 	<Style name="Window">
