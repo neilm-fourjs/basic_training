@@ -1,5 +1,5 @@
 
-LAYOUT (TEXT="Menu")
+LAYOUT (TEXT="Menu", STYLE="main2")
 HBOX
 GRID
 {
@@ -9,12 +9,14 @@ END -- GRID
 GROUP
 GRID
 {
-[::titl                  ::]
-----------------------------
-<S menu                    >
- [a |a001                 ]
- [  |a002                 ]
+[::titl                   ::]
+-----------------------------
+<S menu                     >
+ [a |a001                  ]
+ [  |a002                  ]
  [""]
+<                           >
+[quit:                :about]
 }
 END -- GRID
 END -- GROUP
@@ -44,6 +46,9 @@ IMAGE a = FORMONLY.img, STYLE="bigicon", AUTOSCALE, WIDTH=48 PIXELS;
 PHANTOM FORMONLY.a07;
 PHANTOM FORMONLY.a08;
 PHANTOM FORMONLY.a09;
+
+BUTTON quit : quit;
+BUTTON about : about;
 
 INSTRUCTIONS
 SCREEN RECORD menu ( FORMONLY.a01 THRU FORMONLY.a09 )

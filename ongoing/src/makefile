@@ -20,6 +20,7 @@ fgl_frm2 =  \
 #	echo "making depends";  cd lib ; ./link_lib
 
 ARG1=M
+ARG2=menu_sg
 PRG1=menu.42r
 PRG2=cust_mnt.42r
 
