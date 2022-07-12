@@ -1,7 +1,21 @@
 
+&include "schema.inc"
+
 TOOLBAR
 	ITEM quit
-	ITEM changelab
+	SEPARATOR
+	ITEM accept
+	ITEM cancel
+	SEPARATOR
+	ITEM find
+	ITEM first
+	ITEM previous
+	ITEM next
+	ITEM last
+	SEPARATOR
+	ITEM delete
+	ITEM update
+	ITEM insert
 END -- TB
 
 LAYOUT ( TEXT="Customer Maint", STYLE="main2" )
@@ -12,7 +26,7 @@ GRID
 <G grp1                                                          >
 [l03     |f03                                                   ]
 [l04     |f04                                                   ]
-[l05     |f5]
+[l05     |f5                      ]
 [l06     |f06        ]
 [l07     |f07        ]
 [oa      |f08        ]
@@ -22,39 +36,49 @@ GRID
          [f10                                                   ]
          [f11                                                   ]
          [f12                                                   ]
-[l13     |f13        ]
+[l13     |f13     ]
 [l14     |f14]
+<                                                                >
+[: :stat                                                      : :]
 }
 END -- GRID
 
+TABLES
+customers
+
 ATTRIBUTES
 
-LABEL cc  : cust_code, TEXT=%"Code:", JUSTIFY=RIGHT, SIZEPOLICY=INITIAL;
+LABEL cc  : cust_code, TEXT=%"Code:", JUSTIFY=RIGHT, SIZEPOLICY=DYNAMIC;
 LABEL cn  : cust_name, TEXT=%"Name:", JUSTIFY=RIGHT;
-f01 = FORMONLY.cust_code;
-f02 = FORMONLY.cust_name, STYLE="big bold";
+f01 = customers.cust_code, UPSHIFT, NOT NULL, REQUIRED, PLACEHOLDER="A unique id";
+f02 = customers.cust_name, STYLE="big bold";
 
-GROUP grp1 : grp1, TEXT=%"Details", GRIDCHILDRENINPARENT;
+GROUP grp1 : group1, TEXT=%"Details", GRIDCHILDRENINPARENT, HIDDEN;
 LABEL l03 : cont_name, TEXT=%"Contact:", JUSTIFY=RIGHT;
 LABEL l04 : email, TEXT=%"Email:", JUSTIFY=RIGHT;
 LABEL l05 : disc_code, TEXT=%"Disc Code:", JUSTIFY=RIGHT;
 LABEL l06 : credit_limit, TEXT=%"Credit Limit:", JUSTIFY=RIGHT;
 LABEL l07 : total_invoices, TEXT=%"Invoices:", JUSTIFY=RIGHT;
 LABEL oa  : outstanding_amount, TEXT=%"Outstanding:", JUSTIFY=RIGHT;
-f03 = FORMONLY.cont_name;
-f04 = FORMONLY.email;
-f5  = FORMONLY.disc_code;
-f06 = FORMONLY.credit_limit;
-f07 = FORMONLY.total_invoices;
-f08 = FORMONLY.outstanding_amount;
+f03 = customers.cont_name;
+f04 = customers.email;
+COMBOBOX f5  = customers.disc_code, INITIALIZER=pop_combo;
+f06 = customers.credit_limit;
+f07 = customers.total_invoices, NOENTRY;
+f08 = customers.outstanding_amount, NOENTRY;
 
 GROUP grp2 : grp2, TEXT=%"Address", GRIDCHILDRENINPARENT;
 LABEL adr : addr_line1, TEXT=%"Address:", JUSTIFY=RIGHT;
 LABEL l13 : postal_sort, TEXT=%"Post Code:", JUSTIFY=RIGHT;
 LABEL l14 : country, TEXT=%"Country:", JUSTIFY=RIGHT;
-f09 = FORMONLY.addr_line1;
-f10 = FORMONLY.addr_line2;
-f11 = FORMONLY.addr_line3;
-f12 = FORMONLY.addr_line4;
-f13 = FORMONLY.postal_sort;
-f14 = FORMONLY.country;
+f09 = customers.addr_line1;
+f10 = customers.addr_line2;
+f11 = customers.addr_line3;
+f12 = customers.addr_line4;
+f13 = customers.postal_sort, SAMPLE="i";
+f14 = customers.country;
+
+LABEL stat = FORMONLY.stat, STYLE="stat", SIZEPOLICY=DYNAMIC;
+
+INSTRUCTIONS
+DEFAULT SAMPLE = "i"

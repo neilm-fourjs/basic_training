@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="ANSI_X3.4-1968"?>
 <StyleList>
 
+  <Style name=".stat">
+     <StyleAttribute name="fontSize" value="1.2em" />
+     <StyleAttribute name="fontWeight" value="normal" />
+  </Style>
+
   <Style name=".big">
      <StyleAttribute name="fontSize" value="1.2em" />
   </Style>
@@ -57,7 +62,7 @@
      <StyleAttribute name="windowType" value="modal" />
      <StyleAttribute name="sizable" value="yes" />
      <StyleAttribute name="toolBarPosition" value="none" />
-     <StyleAttribute name="actionPanelPosition" value="none" />
+     <StyleAttribute name="actionPanelPosition" value="bottom" />
      <StyleAttribute name="ringMenuPosition" value="none" />
   </Style>
   <Style name="Window.dialog4">
