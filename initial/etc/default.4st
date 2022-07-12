@@ -7,6 +7,10 @@
   <Style name=".bold">
      <StyleAttribute name="fontWeight" value="bold" />
   </Style>
+  <Style name="Label">
+     <StyleAttribute name="fontWeight" value="bold" />
+     <StyleAttribute name="textColor" value="darkblue" />
+  </Style>
 
   <Style name="Table.menu">
     <StyleAttribute name="headerHidden" value="yes" />
@@ -18,6 +22,9 @@
      <StyleAttribute name="fontSize" value="2em" />
   </Style>
 
+
+
+<!-- Default Styles -->
   <Style name="Window">
      <StyleAttribute name="windowType" value="normal" />
   </Style>
