@@ -1,7 +1,3 @@
----------------------------------------------------------------------------------- 
--- File created from /opt/fourJs/all/my_github/basicTraining/ongoing/src/cust_mnt.4fd by Genero Studio
--- WARNING! All changes made in this file will be lost!
-----------------------------------------------------------------------------------
 
 SCHEMA training
 
@@ -25,7 +21,8 @@ TOOLBAR
 	ITEM about
 END -- TB
 
-LAYOUT (TEXT=%"Customers")
+LAYOUT (TEXT=%"Customers", STYLE="demo")
+VBOX
 GRID training1
 {
 
@@ -34,22 +31,32 @@ GRID training1
 [""]
 [customers_disc|di]              [customers_cred|credit_limit  ]
 [customers_tota|total_invoices]  [customers_outs|outstanding_am]
-[""]
-[customers_addr|addr_line1                    ]
-               [addr_line2                    ]
-               [addr_line3                    ]
-               [addr_line4                    ]
-[customers_post|postal_sor][customers_coun|cou]
-[""]
-[stat                                         ]
 }
-END -- training1
-END -- form
+END -- GRID
+GRID
+{
+<G addr                         >
+[addr_line1                    ]
+[addr_line2                    ]
+[addr_line3                    ]
+[addr_line4                    ]
+[pc|postal_sor]
+[ct|cou]
+}
+END -- GRID
+GRID
+{
+[stat                                         ]
+[i]
+}
+END -- GRID
+END -- VBOX
 
 TABLES
 customers
 
 ATTRIBUTES
+GROUP addr : addr, TEXT=%"Address", STYLE="collapsible";
 LABEL customers_code:customers_cust_code_label1, TEXT=%"Code:", JUSTIFY=RIGHT;
 LABEL customers_name:customers_cust_name_label1, TEXT=%"Name:", JUSTIFY=RIGHT;
 LABEL customers_cont:customers_cont_name_label1, TEXT=%"Contact:", JUSTIFY=RIGHT;
@@ -58,9 +65,8 @@ LABEL customers_disc:customers_disc_code_label1, TEXT=%"Disc Code:", JUSTIFY=RIG
 LABEL customers_cred:customers_credit_limit_label1, TEXT=%"Credit Limit:", JUSTIFY=RIGHT;
 LABEL customers_tota:customers_total_invoices_label1, TEXT=%"Invoice:", JUSTIFY=RIGHT;
 LABEL customers_outs:customers_outstanding_amount_label1, TEXT=%"Outstanding:", JUSTIFY=RIGHT;
-LABEL customers_addr:customers_addr_line1_label1, TEXT=%"Address", JUSTIFY=RIGHT;
-LABEL customers_post:customers_postal_sort_label1, TEXT=%"Post Code:", JUSTIFY=RIGHT;
-LABEL customers_coun:customers_country_label1, TEXT=%"Country:", JUSTIFY=RIGHT;
+LABEL pc:customers_postal_sort_label1, TEXT=%"Post Code:", JUSTIFY=RIGHT;
+LABEL ct:customers_country_label1, TEXT=%"Country:", JUSTIFY=RIGHT;
 
 
 EDIT cust_cod=customers.cust_code, SCROLL, NOT NULL, UPSHIFT, REQUIRED;
@@ -79,3 +85,4 @@ EDIT postal_sor=customers.postal_sort, SCROLL, UPSHIFT;
 EDIT cou=customers.country, SCROLL, UPSHIFT;
 
 LABEL stat = FORMONLY.stat, SIZEPOLICY=DYNAMIC;
+IMAGE i : i, STRETCH=Y;

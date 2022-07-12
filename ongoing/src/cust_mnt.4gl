@@ -112,8 +112,7 @@ MAIN
 		ON ACTION quit
 			EXIT MENU
 
-		COMMAND "Test" MESSAGE "Test"
-		ON ACTION temp MESSAGE "Temp"
+		COMMAND "Test Item" MESSAGE "Test Menu Item"
 	END MENU
 
 	CALL lib.exit_program(0, "Program Finished")
@@ -145,6 +144,7 @@ FUNCTION doInput(l_new BOOLEAN) RETURNS()
 					NEXT FIELD cust_code
 				END IF
 			END IF
+		ON ACTION test ATTRIBUTES(TEXT="Test Action") MESSAGE "Test Action" 
 	END INPUT
 	IF int_flag THEN
 		RETURN

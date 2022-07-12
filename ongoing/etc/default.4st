@@ -75,7 +75,18 @@
 	</Style>
 
 	<Style name="Grid">
-		<StyleAttribute name="fontSize" value="1.2em" />
+		<StyleAttribute name="fontSize" value="14px" />
+	</Style>
+
+	<Style name="Group.collapsible">
+		<StyleAttribute name="collapsible" value="yes" />
+		<StyleAttribute name="collapserPosition" value="left" />
+		<StyleAttribute name="initiallyCollapsed" value="no" />
+	</Style>
+
+	<Style name="Window.demo">
+		<StyleAttribute name="actionPanelPosition" value="right" />
+		<StyleAttribute name="ringMenuPosition" value="bottom" />
 	</Style>
 
 	<Style name="Window">
