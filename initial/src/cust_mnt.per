@@ -1,0 +1,61 @@
+
+TOOLBAR
+	ITEM quit
+	ITEM changelab
+END -- TB
+
+LAYOUT ( TEXT="Customer Maint", STYLE="main2" )
+GRID
+{
+[cc ] [f01       ]
+[cn ] [f02                                                   ]
+<G grp1                                                               >
+[l03] [f03                                                   ]
+[l04] [f04                                                   ]
+[l05] [f5]
+[l06] [f06        ]
+[l07] [f07        ]
+[oa ] [f08        ]
+<                                                                     >
+<G grp2                                                               >
+[adr] [f09                                                           ]
+      [f10                                                           ]
+      [f11                                                           ]
+      [f12                                                           ]
+[l13] [f13        ]
+[l14] [f14]
+}
+END -- GRID
+
+ATTRIBUTES
+
+LABEL cc  : cust_code, TEXT=%"Code:", JUSTIFY=RIGHT, SIZEPOLICY=INITIAL;
+LABEL cn  : cust_name, TEXT=%"Name:", JUSTIFY=RIGHT, STYLE="big bold";
+
+GROUP grp1 : grp1, TEXT=%"Details", GRIDCHILDRENINPARENT;
+LABEL l03 : cont_name, TEXT=%"Contact:", JUSTIFY=RIGHT;
+LABEL l04 : email, TEXT=%"Email:", JUSTIFY=RIGHT;
+LABEL l05 : disc_code, TEXT=%"Disc Code:", JUSTIFY=RIGHT;
+LABEL l06 : credit_limit, TEXT=%"Credit Limit:", JUSTIFY=RIGHT;
+LABEL l07 : total_invoices, TEXT=%"Invoices:", JUSTIFY=RIGHT;
+LABEL oa  : outstanding_amount, TEXT=%"Outstanding:", JUSTIFY=RIGHT;
+
+GROUP grp2 : grp2, TEXT=%"Address", GRIDCHILDRENINPARENT;
+LABEL adr : addr_line1, TEXT=%"Address:", JUSTIFY=RIGHT;
+LABEL l13 : postal_sort, TEXT=%"Post Code:", JUSTIFY=RIGHT;
+LABEL l14 : country, TEXT=%"Country:", JUSTIFY=RIGHT;
+
+f01 = FORMONLY.cust_code;
+f02 = FORMONLY.cust_name, STYLE="big bold";
+f03 = FORMONLY.cont_name;
+f04 = FORMONLY.EMAIL;
+f5 = FORMONLY.disc_code;
+f06 = FORMONLY.credit_limit;
+f07 = FORMONLY.total_invoices;
+f08 = FORMONLY.outstanding_amount;
+f09 = FORMONLY.addr_line1;
+f10 = FORMONLY.addr_line2;
+f11 = FORMONLY.addr_line3;
+f12 = FORMONLY.addr_line4;
+f13 = FORMONLY.postal_sort;
+f14 = FORMONLY.country;

@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="ANSI_X3.4-1968"?>
 <StyleList>
+
+  <Style name=".big">
+     <StyleAttribute name="fontSize" value="1.2em" />
+  </Style>
+  <Style name=".bold">
+     <StyleAttribute name="fontWeight" value="bold" />
+  </Style>
+
   <Style name="Table.menu">
     <StyleAttribute name="headerHidden" value="yes" />
     <StyleAttribute name="highlightCurrentRow" value="no" />
