@@ -4,8 +4,8 @@ IMPORT FGL lib
 
 DEFINE m_arr    DYNAMIC ARRAY OF RECORD LIKE customers.*
 DEFINE m_curRow SMALLINT
+DEFINE m_where  STRING
 MAIN
-	DEFINE l_where STRING
 	CALL lib.db_connect()
 
 	CALL ui.Interface.setText("Customers")
@@ -13,32 +13,35 @@ MAIN
 	OPEN FORM f FROM "cust_mnt"
 	DISPLAY FORM f
 
-	LET l_where = "1=1"
-	CALL getData(l_where)
+	LET m_where = " 1=1"
+	CALL getData()
 
-	MENU
-		BEFORE MENU
+	DISPLAY ARRAY m_arr TO arr.* ATTRIBUTES(ACCEPT=FALSE, CANCEL=FALSE)
+		BEFORE DISPLAY
 			CALL DIALOG.getForm().setElementHidden("group1", FALSE)
 			CALL setRow(DIALOG, 1)
 
+		BEFORE ROW
+			CALL setRow(DIALOG, arr_curr())
+
 		ON ACTION insert
 			IF doInput(TRUE) THEN
-				CALL getData(l_where)
+				CALL getData()
 			END IF
 		ON ACTION update
 			IF doInput(FALSE) THEN
-				CALL getData(l_where)
+				CALL getData()
 			END IF
 		ON ACTION delete
 			IF fgl_winQuestion("Confirm", "Delete row?", "No", "Yes|No", "question", 0) = "Yes" THEN
 				DELETE FROM customers WHERE cust_code = m_arr[m_curRow].cust_code
-				CALL getData(l_where)
+				CALL getData()
 				CALL setRow(DIALOG, 1)
 			END IF
 
 		ON ACTION find
-			LET l_where = doConstruct()
-			CALL getData(l_where)
+			CALL doConstruct()
+			CALL getData()
 			CALL setRow(DIALOG, 1)
 
 		ON ACTION first
@@ -58,19 +61,19 @@ MAIN
 			CALL setRow(DIALOG, m_arr.getLength())
 
 		ON ACTION quit
-			EXIT MENU
+			EXIT DISPLAY
 
 		ON ACTION close
-			EXIT MENU
-	END MENU
+			EXIT DISPLAY
+	END DISPLAY
 
 	CALL lib.exit_program(0, "Program Finished")
 END MAIN
 --------------------------------------------------------------------------------------------------------------
-FUNCTION getData(l_where STRING)
+FUNCTION getData() RETURNS ()
 	DEFINE i INT
 	DEFINE l_stmt STRING
-	LET l_stmt = SFMT("SELECT * FROM customers WHERE %1 ORDER BY cust_code", l_where)
+	LET l_stmt = SFMT("SELECT * FROM customers WHERE %1 ORDER BY cust_name", m_where)
 	CALL m_arr.clear()
 	DECLARE cur CURSOR FROM l_stmt
 	FOREACH cur INTO m_arr[i := i + 1].*
@@ -78,33 +81,35 @@ FUNCTION getData(l_where STRING)
 	CALL m_arr.deleteElement(i)
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
-FUNCTION setRow(d ui.Dialog, i INT)
+FUNCTION setRow(d ui.Dialog, i INT) RETURNS ()
 	LET m_curRow = i
+	CALL d.setCurrentRow("arr", m_curRow)
 	DISPLAY BY NAME m_arr[m_curRow].*
 	CALL d.setActionActive("previous", m_curRow > 1)
 	CALL d.setActionActive("first", m_curRow > 1)
 	CALL d.setActionActive("next", m_curRow < m_arr.getLength())
 	CALL d.setActionActive("last", m_curRow < m_arr.getLength())
-	DISPLAY SFMT("Row %1 of %2", m_curRow, m_arr.getLength()) TO stat
+	DISPLAY SFMT("Row %1 of %2 Criteria: %3", m_curRow, m_arr.getLength(), IIF(m_where==" 1=1","All", m_where)) TO stat
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
-FUNCTION doConstruct() RETURNS STRING
+FUNCTION doConstruct() RETURNS ()
 	DEFINE l_where STRING
 	DEFINE l_stmt STRING
 	DEFINE l_cnt INT
 	LET int_flag = FALSE
 	CONSTRUCT BY NAME l_where ON customers.*
-	IF int_flag THEN RETURN "1=1" END IF
+	IF int_flag THEN RETURN END IF
 	LET l_stmt = SFMT("SELECT COUNT(*) FROM customers WHERE %1 ORDER BY cust_code", l_where)
+	DISPLAY SFMT("SQL: %1", l_stmt)
 	DECLARE cnt_cur CURSOR FROM l_stmt
 	OPEN cnt_cur 
 	FETCH cnt_cur INTO l_cnt
 	CLOSE cnt_cur
 	IF l_cnt = 0 THEN
 		ERROR "No Rows Found"
-		LET l_where = "1=1"
+		LET l_where = " 1=1"
 	END IF
-	RETURN l_where
+	LET m_where = l_where
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION doInput(l_new BOOLEAN) RETURNS BOOLEAN

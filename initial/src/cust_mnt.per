@@ -19,6 +19,13 @@ TOOLBAR
 END -- TB
 
 LAYOUT ( TEXT="Customer Maint", STYLE="main2" )
+VBOX
+HBOX (SPLITTER)
+TABLE tab1 (FLIPPED@SMALL)
+{
+[a01     |a02                     ]
+}
+END -- TABLE
 GRID
 {
 [cc      |f01       ]
@@ -38,10 +45,15 @@ GRID
          [f12                                                   ]
 [l13     |f13     ]
 [l14     |f14]
-<                                                                >
-[: :stat                                                     : :]
 }
 END -- GRID
+END -- HBOX
+GRID
+{
+[stat                                                            ]
+}
+END -- GRID
+END -- VBOX
 
 TABLES
 customers
@@ -62,7 +74,7 @@ LABEL l07 : total_invoices, TEXT=%"Invoices:", JUSTIFY=RIGHT;
 LABEL oa  : outstanding_amount, TEXT=%"Outstanding:", JUSTIFY=RIGHT;
 f03 = customers.cont_name;
 f04 = customers.email, KEYBOARDHINT=EMAIL, PLACEHOLDER="some@somewhere.com";
-COMBOBOX f5  = customers.disc_code, INITIALIZER=pop_combo;
+COMBOBOX f5  = customers.disc_code, INITIALIZER=pop_combo, NOT NULL;
 f06 = customers.credit_limit, KEYBOARDHINT=NUMBER;
 f07 = customers.total_invoices, NOENTRY;
 f08 = customers.outstanding_amount, NOENTRY;
@@ -80,5 +92,22 @@ f14 = customers.country;
 
 LABEL stat = FORMONLY.stat, STYLE="stat", SIZEPOLICY=DYNAMIC;
 
+-- Customer array
+a01 = FORMONLY.a_cust_code, TITLE=%"Code";
+a02 = FORMONLY.a_cust_name, TITLE=%"Name";
+PHANTOM FORMONLY.a_cont_name;
+PHANTOM FORMONLY.a_EMAIL;
+PHANTOM FORMONLY.a_disc_code;
+PHANTOM FORMONLY.a_credit_limit;
+PHANTOM FORMONLY.a_total_invoices;
+PHANTOM FORMONLY.a_outstanding_amount;
+PHANTOM FORMONLY.a_addr_line1;
+PHANTOM FORMONLY.a_addr_line2;
+PHANTOM FORMONLY.a_addr_line3;
+PHANTOM FORMONLY.a_addr_line4;
+PHANTOM FORMONLY.a_postal_sort;
+PHANTOM FORMONLY.a_country;
+
 INSTRUCTIONS
 DEFAULT SAMPLE = "i"
+SCREEN RECORD arr ( FORMONLY.a_cust_code THRU FORMONLY.a_country )
