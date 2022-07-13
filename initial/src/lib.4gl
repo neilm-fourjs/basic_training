@@ -68,5 +68,7 @@ FUNCTION pop_combo(l_cb ui.ComboBox)
 	CASE l_cb.getColumnName()
 		WHEN "disc_code"
 			CALL l_cb.addItem("AA", "This is item 'AA'")
+			CALL l_cb.addItem("BB", "This is item 'BB'")
+			CALL l_cb.addItem("CC", "This is item 'CC'")
 	END CASE
 END FUNCTION

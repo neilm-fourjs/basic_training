@@ -5,7 +5,7 @@ IMPORT FGL lib
 DEFINE m_arr    DYNAMIC ARRAY OF RECORD LIKE customers.*
 DEFINE m_curRow SMALLINT
 MAIN
-
+	DEFINE l_where STRING
 	CALL lib.db_connect()
 
 	CALL ui.Interface.setText("Customers")
@@ -13,7 +13,8 @@ MAIN
 	OPEN FORM f FROM "cust_mnt"
 	DISPLAY FORM f
 
-	CALL getData()
+	LET l_where = "1=1"
+	CALL getData(l_where)
 
 	MENU
 		BEFORE MENU
@@ -22,21 +23,23 @@ MAIN
 
 		ON ACTION insert
 			IF doInput(TRUE) THEN
-				CALL getData()
+				CALL getData(l_where)
 			END IF
 		ON ACTION update
 			IF doInput(FALSE) THEN
-				CALL getData()
+				CALL getData(l_where)
 			END IF
 		ON ACTION delete
 			IF fgl_winQuestion("Confirm", "Delete row?", "No", "Yes|No", "question", 0) = "Yes" THEN
 				DELETE FROM customers WHERE cust_code = m_arr[m_curRow].cust_code
-				CALL getData()
+				CALL getData(l_where)
 				CALL setRow(DIALOG, 1)
 			END IF
 
 		ON ACTION find
-			CALL constr()
+			LET l_where = doConstruct()
+			CALL getData(l_where)
+			CALL setRow(DIALOG, 1)
 
 		ON ACTION first
 			CALL setRow(DIALOG, 1)
@@ -64,10 +67,12 @@ MAIN
 	CALL lib.exit_program(0, "Program Finished")
 END MAIN
 --------------------------------------------------------------------------------------------------------------
-FUNCTION getData()
+FUNCTION getData(l_where STRING)
 	DEFINE i INT
+	DEFINE l_stmt STRING
+	LET l_stmt = SFMT("SELECT * FROM customers WHERE %1 ORDER BY cust_code", l_where)
 	CALL m_arr.clear()
-	DECLARE cur CURSOR FOR SELECT * FROM customers ORDER BY cust_code
+	DECLARE cur CURSOR FROM l_stmt
 	FOREACH cur INTO m_arr[i := i + 1].*
 	END FOREACH
 	CALL m_arr.deleteElement(i)
@@ -81,6 +86,25 @@ FUNCTION setRow(d ui.Dialog, i INT)
 	CALL d.setActionActive("next", m_curRow < m_arr.getLength())
 	CALL d.setActionActive("last", m_curRow < m_arr.getLength())
 	DISPLAY SFMT("Row %1 of %2", m_curRow, m_arr.getLength()) TO stat
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+FUNCTION doConstruct() RETURNS STRING
+	DEFINE l_where STRING
+	DEFINE l_stmt STRING
+	DEFINE l_cnt INT
+	LET int_flag = FALSE
+	CONSTRUCT BY NAME l_where ON customers.*
+	IF int_flag THEN RETURN "1=1" END IF
+	LET l_stmt = SFMT("SELECT COUNT(*) FROM customers WHERE %1 ORDER BY cust_code", l_where)
+	DECLARE cnt_cur CURSOR FROM l_stmt
+	OPEN cnt_cur 
+	FETCH cnt_cur INTO l_cnt
+	CLOSE cnt_cur
+	IF l_cnt = 0 THEN
+		ERROR "No Rows Found"
+		LET l_where = "1=1"
+	END IF
+	RETURN l_where
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION doInput(l_new BOOLEAN) RETURNS BOOLEAN
@@ -112,7 +136,4 @@ FUNCTION doInput(l_new BOOLEAN) RETURNS BOOLEAN
 		UPDATE customers SET customers.* = l_cust.* WHERE cust_code = l_cust.cust_code
 	END IF
 	RETURN TRUE
-END FUNCTION
---------------------------------------------------------------------------------------------------------------
-FUNCTION constr()
 END FUNCTION

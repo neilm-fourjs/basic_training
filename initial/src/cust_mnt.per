@@ -39,7 +39,7 @@ GRID
 [l13     |f13     ]
 [l14     |f14]
 <                                                                >
-[: :stat                                                      : :]
+[: :stat                                                     : :]
 }
 END -- GRID
 
@@ -61,9 +61,9 @@ LABEL l06 : credit_limit, TEXT=%"Credit Limit:", JUSTIFY=RIGHT;
 LABEL l07 : total_invoices, TEXT=%"Invoices:", JUSTIFY=RIGHT;
 LABEL oa  : outstanding_amount, TEXT=%"Outstanding:", JUSTIFY=RIGHT;
 f03 = customers.cont_name;
-f04 = customers.email;
+f04 = customers.email, KEYBOARDHINT=EMAIL, PLACEHOLDER="some@somewhere.com";
 COMBOBOX f5  = customers.disc_code, INITIALIZER=pop_combo;
-f06 = customers.credit_limit;
+f06 = customers.credit_limit, KEYBOARDHINT=NUMBER;
 f07 = customers.total_invoices, NOENTRY;
 f08 = customers.outstanding_amount, NOENTRY;
 
