@@ -86,9 +86,10 @@
       <File filePath="src/schema.inc"/>
     </Library>
     <Application binaryName="menu" dependencies="14000,1986" id="18736" label="menu">
-      <Configuration id="-1429969501" label="Menu"/>
+      <Configuration commandLineArguments="M menu_sg" id="-1429969501" label="Menu"/>
       <File filePath="src/menu.4gl"/>
       <File filePath="src/menu.per"/>
+      <File filePath="src/menu_sg.per"/>
     </Application>
     <Application binaryName="menu_mnt" dependencies="-2072896198,14000,1986" id="-596818949" label="menu_mnt">
       <Configuration id="-1819640189" label="Configuration"/>

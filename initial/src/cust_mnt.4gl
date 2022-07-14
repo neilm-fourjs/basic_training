@@ -35,7 +35,7 @@ MAIN
 				DISPLAY SFMT("Before Row %1", arr_curr())
 				CALL setRow(DIALOG, arr_curr()) RETURNING l_cust.*
 
-			ON ACTION find
+			ON ACTION search
 				CALL doConstruct()
 				CALL getData()
 				CALL setRow(DIALOG, 1) RETURNING l_cust.*
@@ -87,7 +87,7 @@ MAIN
 				IF l_new THEN
 					SELECT * FROM customers WHERE cust_code = l_cust.cust_code
 					IF STATUS != NOTFOUND THEN
-						CALL lib.show_error(SFMT("Customer '%1' code already exists!", l_cust.cust_code CLIPPED))
+						CALL lib.showError(SFMT("Customer '%1' code already exists!", l_cust.cust_code CLIPPED))
 						NEXT FIELD cust_code
 					END IF
 				END IF
@@ -123,7 +123,7 @@ MAIN
 					LET l_mess = SFMT("%1 of '%2' Failed: %3", IIF(l_new,"Insert","Update"), l_cust.cust_code, SQLERRMESSAGE)
 					ERROR l_mess
 				END IF
-				CALL lib.log(l_mess)
+				CALL lib.log(1, l_mess)
 				LET l_dataChanged = TRUE
 				NEXT FIELD a_cust_code
 		END INPUT

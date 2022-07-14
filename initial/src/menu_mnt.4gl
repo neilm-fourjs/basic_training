@@ -1,4 +1,3 @@
-IMPORT FGL fgldialog
 IMPORT FGL lib
 &include "schema.inc"
 DEFINE m_menus DYNAMIC ARRAY OF RECORD LIKE menus.*
@@ -6,6 +5,7 @@ MAIN
 	DEFINE x      SMALLINT = 0
 	DEFINE l_menu RECORD LIKE menus.*
 
+	CALL lib.init()
 	CALL lib.db_connect()
 
 	CALL ui.Interface.setText("Menu Maint")
@@ -18,14 +18,15 @@ MAIN
 
 	OPEN FORM f FROM "menu_mnt"
 	DISPLAY FORM f
-
 	DIALOG ATTRIBUTE(UNBUFFERED)
 		DISPLAY ARRAY m_menus TO arr.*
 			BEFORE ROW
 				LET l_menu.* = m_menus[arr_curr()].*
+				DISPLAY l_menu.m_img TO img
 		END DISPLAY
 		INPUT BY NAME l_menu.* ATTRIBUTE(WITHOUT DEFAULTS)
 		END INPUT
+		ON ACTION about CALL lib.about()
 		ON ACTION close EXIT DIALOG
 		ON ACTION quit EXIT DIALOG
 	END DIALOG

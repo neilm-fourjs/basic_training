@@ -23,6 +23,37 @@
     <StyleAttribute name="highlightCurrentCell" value="no"/>
      <StyleAttribute name="fontSize" value="1.5em" />
   </Style>
+
+	<Style name="UserInterface.sdi"> <!-- SDI -->
+		<StyleAttribute name="desktopMultiWindow" value="yes"/>
+		<StyleAttribute name="browserMultiPage" value="yes"/>
+		<StyleAttribute name="applicationListVisible" value="no"/>
+		<StyleAttribute name="windowListVisible" value="no"/>
+	</Style>
+
+	<Style name="UserInterface.mdi"> <!-- MDI -->
+		<StyleAttribute name="desktopMultiWindow" value="no"/>
+		<StyleAttribute name="browserMultiPage" value="no"/>
+		<StyleAttribute name="applicationListVisible" value="yes"/>
+		<StyleAttribute name="windowListVisible" value="yes"/>
+	</Style>
+
+	<Style name="Image">
+		<StyleAttribute name="border" value="none"/>
+	</Style>
+
+	<Style name="Label.menuline1">
+		<StyleAttribute name="fontSize" value="1.5em" />
+		<StyleAttribute name="textColor" value="darkblue" />
+		<StyleAttribute name="fontWeight" value="normal" />
+	</Style>
+	<Style name="Label.menuline2">
+		<StyleAttribute name="fontSize" value="1em" />
+		<StyleAttribute name="fontStyle" value="italic" />
+		<StyleAttribute name="textColor" value="grey" />
+		<StyleAttribute name="fontWeight" value="normal" />
+	</Style>
+
   <Style name="Label.heading">
      <StyleAttribute name="fontSize" value="2em" />
   </Style>
