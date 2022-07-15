@@ -37,8 +37,11 @@ MAIN
 			IF m_menu[x].m_text IS NOT NULL THEN
 				CALL lib.log(1, SFMT("Before row %1 '%2'", x, m_menu[x].m_text))
 				CASE m_menu[x].m_type
-					WHEN "F"
-						LET l_cmd = SFMT("fglrun %1 %2 %3", m_menu[x].m_cmd, IIF(lib.m_mdi, "M", "S"), m_menu[x].m_args)
+					WHEN "f" -- SDI
+						LET l_cmd = SFMT("fglrun mdiSwitch S %1 %2", m_menu[x].m_cmd, m_menu[x].m_args)
+						RUN l_cmd WITHOUT WAITING
+					WHEN "F" -- MDI
+						LET l_cmd = SFMT("fglrun %1 %2", m_menu[x].m_cmd, m_menu[x].m_args)
 						RUN l_cmd WITHOUT WAITING
 					WHEN "M"
 						CALL getMenu(m_menu[arr_curr()].m_child)

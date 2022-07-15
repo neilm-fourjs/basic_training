@@ -27,6 +27,7 @@ MAIN
 
 	LET m_tabs[1] = "menus"
 	LET m_tabs[2] = "customers"
+	LET m_tabs[3] = "countries"
 
 	CALL dropTables()
 	CALL createTables()
@@ -69,6 +70,9 @@ FUNCTION createTables()
 			addr_line1 VARCHAR(50), addr_line2 VARCHAR(50), addr_line3 VARCHAR(50), addr_line4 VARCHAR(50),
 			postal_sort VARCHAR(10), country VARCHAR(3))
 
+	CREATE TABLE countries (
+			country_code CHAR(3), name VARCHAR(40) )
+
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION insertTestData()
@@ -80,9 +84,12 @@ FUNCTION insertTestData()
 	CALL insMenu(0, "T", "maint", "Maintenance Programs", "", "", "main", "", "")
 	CALL insMenu(0, "F", "maint", "Menu Maintenance", "Maintain the menu table", "fa-cog", "", "menu_mnt", "")
 	CALL insMenu(0, "F", "maint", "Customer Maintenance", "Add/Update/Delete customers", "fa-users", "", "cust_mnt", "")
+	CALL insMenu(0, "f", "maint", "Customer Maintenance (SDI)", "Add/Update/Delete customers", "fa-users", "", "cust_mnt", "")
 	CALL insMenu(0, "T", "enq", "Enquiry Programs", "", "", "main", "", "")
 	CALL insMenu(0, "F", "enq", "Customer Enquiry 1", "Enquiry on customers", "fa-users", "", "cust_mnt", "E")
-	CALL insMenu(0, "F", "enq", "Customer Enquiry 2", "Enquiry on customers from list", "fa-users", "", "cust_mnt", "e")
+	CALL insMenu(0, "f", "enq", "Customer Enquiry 2", "Enquiry on customers (SDI)", "fa-users", "", "cust_mnt", "E")
+
+	INSERT INTO countries VALUES("GBR", "Great Britain")
 
 	CALL lib.log(1, "Loading Customers ...")
 	LOAD FROM "../etc/customers.unl" INSERT INTO customers

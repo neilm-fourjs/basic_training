@@ -4,9 +4,11 @@
 TOOLBAR
 	ITEM quit
 	SEPARATOR
+	ITEM save
 	ITEM accept
 	ITEM cancel
 	SEPARATOR
+	ITEM lookup
 	ITEM search
 	ITEM first
 	ITEM previous
@@ -16,6 +18,8 @@ TOOLBAR
 	ITEM delete
 	ITEM update
 	ITEM insert
+	SEPARATOR
+	ITEM about
 END -- TB
 
 LAYOUT ( TEXT="Customer Maint", STYLE="main2" )
@@ -62,7 +66,7 @@ ATTRIBUTES
 
 LABEL cc  : cust_code, TEXT=%"Code:", JUSTIFY=RIGHT, SIZEPOLICY=DYNAMIC;
 LABEL cn  : cust_name, TEXT=%"Name:", JUSTIFY=RIGHT;
-f01 = customers.cust_code, UPSHIFT, NOT NULL, REQUIRED, PLACEHOLDER="A unique id";
+f01 = customers.cust_code, UPSHIFT, NOT NULL, REQUIRED, PLACEHOLDER="A unique id", TABINDEX=1;
 f02 = customers.cust_name, STYLE="big bold";
 
 GROUP grp1 : group1, TEXT=%"Details", GRIDCHILDRENINPARENT, HIDDEN;
@@ -93,8 +97,8 @@ f14 = customers.country;
 LABEL stat = FORMONLY.stat, STYLE="stat", SIZEPOLICY=DYNAMIC;
 
 -- Customer array
-a01 = FORMONLY.a_cust_code, TITLE=%"Code";
-a02 = FORMONLY.a_cust_name, TITLE=%"Name";
+a01 = FORMONLY.a_cust_code, TITLE=%"Code", TABINDEX=0;
+a02 = FORMONLY.a_cust_name, TITLE=%"Name", TABINDEX=0;
 PHANTOM FORMONLY.a_cont_name;
 PHANTOM FORMONLY.a_EMAIL;
 PHANTOM FORMONLY.a_disc_code;

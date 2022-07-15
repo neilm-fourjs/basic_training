@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Project defaultApplication="-956009109" gstVersion="40100" version="3.4">
+<Project defaultApplication="-1429969501" gstVersion="40100" version="3.4">
   <Settings>
     <DynamicProperties version="4">
       <DynamicProperty description="Accent color (Android 5.0 and later)" initialValue="#9575CD" isDefaultInherited="false" isHidden="false" label="Accent color" name="gma-accent-color" readOnly="false" type="COLOR"/>
@@ -67,8 +67,9 @@
   </Settings>
   <LanguageList version="1.0"/>
   <PlatformList version="1.0"/>
-  <Group environment="value:DBNAME=../etc/training.db" id="75644415" label="basicTraining" language="Genero">
+  <Group environment="value:MDI=1,value:DBNAME=../etc/training.db" id="75644415" label="basicTraining" language="Genero">
     <Application binaryName="cust_mnt" dependencies="14000" id="1257009096" label="cust_mnt">
+      <Configuration commandLineArguments="S E" id="579846818" label="Enquiry"/>
       <Configuration commandLineArguments="S" id="-956009109" label="SDI"/>
       <File filePath="src/cust_mnt.4gl"/>
       <File filePath="src/cust_mnt.per"/>
@@ -83,16 +84,22 @@
     </Library>
     <Library binaryName="Library" dependencies="1986,-2072896198" id="14000" label="Library">
       <File filePath="src/lib.4gl"/>
+      <File filePath="src/lookup.4gl"/>
       <File filePath="src/schema.inc"/>
     </Library>
+    <Application binaryName="mdiSwitch" dependencies="14000,-2072896198" id="958747858" label="mdiSwitch">
+      <Configuration commandLineArguments="S cust_mnt E" id="1596935185" label="Configuration"/>
+      <File filePath="src/mdiSwitch.4gl"/>
+    </Application>
     <Application binaryName="menu" dependencies="14000,1986" id="18736" label="menu">
       <Configuration commandLineArguments="M menu_sg" id="-1429969501" label="Menu"/>
+      <Configuration commandLineArguments="S" id="1916496889" label="Menu SDI"/>
       <File filePath="src/menu.4gl"/>
       <File filePath="src/menu.per"/>
       <File filePath="src/menu_sg.per"/>
     </Application>
     <Application binaryName="menu_mnt" dependencies="-2072896198,14000,1986" id="-596818949" label="menu_mnt">
-      <Configuration id="-1819640189" label="Configuration"/>
+      <Configuration commandLineArguments="S" id="-1819640189" label="Configuration"/>
       <File filePath="src/menu_mnt.4gl"/>
       <File filePath="src/menu_mnt.per"/>
     </Application>

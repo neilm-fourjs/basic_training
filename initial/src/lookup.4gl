@@ -81,14 +81,14 @@ PUBLIC FUNCTION (this lookup) lookup() RETURNS STRING
 		RETURN NULL
 	END IF
 
-	GL_DBGMSG(2, SFMT("g2_lookup2: windowTitle = %1", this.windowTitle))
-	GL_DBGMSG(2, SFMT("g2_lookup2: sql_getData = %1", this.sql_getData))
-	GL_DBGMSG(2, SFMT("g2_lookup2: table       = %1", this.tableName))
-	GL_DBGMSG(2, SFMT("g2_lookup2: column	     = %1", this.columnList))
-	GL_DBGMSG(2, SFMT("g2_lookup2: titles	     = %1", this.columnTitles))
-	GL_DBGMSG(2, SFMT("g2_lookup2: where       = %1", this.whereClause))
-	GL_DBGMSG(2, SFMT("g2_lookup2: orderby     = %1", this.orderBy))
-	GL_DBGMSG(2, SFMT("g2_lookup2: maxColWidth = %1", this.maxColWidth))
+	GL_DBGMSG(2, SFMT("lookup: windowTitle = %1", this.windowTitle))
+	GL_DBGMSG(2, SFMT("lookup: sql_getData = %1", this.sql_getData))
+	GL_DBGMSG(2, SFMT("lookup: table       = %1", this.tableName))
+	GL_DBGMSG(2, SFMT("lookup: column	     = %1", this.columnList))
+	GL_DBGMSG(2, SFMT("lookup: titles	     = %1", this.columnTitles))
+	GL_DBGMSG(2, SFMT("lookup: where       = %1", this.whereClause))
+	GL_DBGMSG(2, SFMT("lookup: orderby     = %1", this.orderBy))
+	GL_DBGMSG(2, SFMT("lookup: maxColWidth = %1", this.maxColWidth))
 
 -- Check to make sure there are records.
 	LET this.totalRecords = this.countRows(this.whereClause)
@@ -99,18 +99,17 @@ PUBLIC FUNCTION (this lookup) lookup() RETURNS STRING
 
 -- build the main sql if it's not already defined
 	IF this.sql_getData IS NULL THEN
-		LET this.sql_getData =
-				"SELECT " || this.columnList || " FROM " || this.tableName, " WHERE " || this.whereClause
+		LET this.sql_getData = SFMT("SELECT %1 FROM %2 WHERE %3", this.columnList, this.tableName, this.whereClause)
 		IF this.orderBy IS NOT NULL THEN
-			LET this.sql_getData = this.sql_getData CLIPPED, " ORDER BY " || this.orderBy
+			LET this.sql_getData = this.sql_getData CLIPPED, SFMT(" ORDER BY %1", this.orderBy)
 		END IF
-		GL_DBGMSG(2, SFMT("g2_lookup2: sql_getData = %1 BUILT", this.sql_getData))
+		GL_DBGMSG(2, SFMT("lookup: sql_getData = %1 BUILT", this.sql_getData))
 	END IF
 
 -- Perpare the main cursor
 	LET this.sqlQueryHandle = base.SqlHandle.create()
 	TRY
-		GL_DBGMSG(2, SFMT("g2_lookup2: sql_getData = %1 Prepare", this.sql_getData))
+		GL_DBGMSG(2, SFMT("lookup: sql_getData = %1 Prepare", this.sql_getData))
 		CALL this.sqlQueryHandle.prepare(this.sql_getData)
 		CALL this.sqlQueryHandle.openScrollCursor()
 	CATCH
@@ -124,13 +123,13 @@ PUBLIC FUNCTION (this lookup) lookup() RETURNS STRING
 		LET this.dsp_fields[x].name = "dsp_" || this.fields[x].name
 		LET this.dsp_fields[x].type = this.fields[x].type
 		LET this.dsp_fields[x].width = this.getColumnLength(this.fields[x].type)
-		GL_DBGMSG(2, "g2_lookup2:" || x || " Name:" || this.fields[x].name || " Type:" || this.fields[x].type)
+		GL_DBGMSG(2, SFMT("lookup: %1 Name: %2 Type: %3",x, this.fields[x].name, this.fields[x].type))
 	END FOR
 	LET this.totalFields = this.fields.getLength()
-	GL_DBGMSG(2, "g2_lookup2: Cursor Okay.")
+	GL_DBGMSG(2, "lookup: Cursor Okay.")
 
 -- Open the window and define a table.
-	GL_DBGMSG(2, "g2_lookup2: Opening Window.")
+	GL_DBGMSG(2, "lookup: Opening Window.")
 	OPEN WINDOW listv AT 1, 1 WITH 15 ROWS, 80 COLUMNS ATTRIBUTE(STYLE = "naked")
 	CALL ui.Window.getCurrent().setText(this.windowTitle)
 	LET l_frm = ui.Window.getCurrent().createForm(this.formName).getNode() -- ensures form name is specific for this lookup
@@ -151,7 +150,7 @@ PUBLIC FUNCTION (this lookup) lookup() RETURNS STRING
 	CALL l_titl.setAttribute("style", "tabtitl")
 	LET l_sp = l_hbx.createChild('SpacerItem')
 }
-	GL_DBGMSG(2, "g2_lookup2: Generating Table...")
+	GL_DBGMSG(2, "lookup: Generating Table...")
 -- Create the table
 	LET l_tabl = l_grid.createChild('Table')
 	CALL l_tabl.setAttribute("width", 100)
@@ -178,7 +177,7 @@ PUBLIC FUNCTION (this lookup) lookup() RETURNS STRING
 		END IF
 	END FOR
 
-	GL_DBGMSG(2, "g2_lookup2: Adding Update/Insert area ...")
+	GL_DBGMSG(2, "lookup: Adding Update/Insert area ...")
 -- Create Lables & Fields for the update/insert area.
 	LET this.inputVBox = l_grid.createChild('VBox')
 	CALL this.inputVBox.setAttribute("posY", 2)
@@ -205,7 +204,7 @@ PUBLIC FUNCTION (this lookup) lookup() RETURNS STRING
 		CALL l_titl.setAttribute("posX", 20)
 	END FOR
 
-	GL_DBGMSG(2, "g2_lookup2: Adding buttons...")
+	GL_DBGMSG(2, "lookup: Adding buttons...")
 -- Create centered buttons.
 	LET l_hbx = l_grid.createChild('HBox')
 	CALL l_hbx.setAttribute("width", 100)
@@ -323,7 +322,7 @@ PUBLIC FUNCTION (this lookup) lookup() RETURNS STRING
 				CALL l_curr.setAttribute(
 						"text", SFMT("%1 (%2)", x USING "<<<,##&", arr_curr() USING "<<<,##&"))
 			OTHERWISE
-				GL_DBGMSG(2, "g2_lookup2: Unhandled Event:" || l_event)
+				GL_DBGMSG(2, "lookup: Unhandled Event:" || l_event)
 		END CASE
 	END WHILE
 	LET this.selectedKey =
@@ -332,10 +331,10 @@ PUBLIC FUNCTION (this lookup) lookup() RETURNS STRING
 	CALL this.sqlQueryHandle.close()
 	CLOSE WINDOW listv
 	IF int_flag THEN
-		GL_DBGMSG(2, "g2_lookup2: Window Closed, Cancelled.")
+		GL_DBGMSG(2, "lookup: Window Closed, Cancelled.")
 		RETURN NULL
 	ELSE
-		GL_DBGMSG(2, SFMT("g2_lookup2: Window Closed, returning row:%1 %2", arr_curr(), this.selectedKey.trim()))
+		GL_DBGMSG(2, SFMT("lookup: Window Closed, returning row:%1 %2", arr_curr(), this.selectedKey.trim()))
 		RETURN this.selectedKey.trim()
 	END IF
 
@@ -385,7 +384,7 @@ END FUNCTION
 FUNCTION (this lookup) countRows(l_where STRING) RETURNS INT
 	DEFINE i INT
 
-	GL_DBGMSG(2, "g2_lookup2: Declaring Count Cursor...")
+	GL_DBGMSG(2, "lookup: Declaring Count Cursor...")
 	IF this.sql_count IS NULL THEN
 		LET this.sql_count = SFMT("SELECT COUNT(*) FROM %1 WHERE %2", this.tableName, l_where)
 	END IF
@@ -400,7 +399,7 @@ FUNCTION (this lookup) countRows(l_where STRING) RETURNS INT
 	FETCH listcntcur INTO i
 	CLOSE listcntcur
 
-	GL_DBGMSG(2, SFMT("g2_lookup2: Counted: %1", i))
+	GL_DBGMSG(2, SFMT("lookup: Counted: %1", i))
 	RETURN i
 END FUNCTION
 ----------------------------------------------------------------------------------------------------
@@ -457,7 +456,7 @@ PRIVATE FUNCTION (this lookup) delete(l_key STRING) RETURNS BOOLEAN
 					"Delete", SFMT("Delete this record?\nKey'%1'", l_key), "Yes", "Yes|No", "question",0)
 	IF l_confirm = "Y" THEN
 		LET l_sql = SFMT("DELETE FROM %1 WHERE %2 = '%3'", this.tableName, this.fields[1].name, l_key)
-		GL_DBGMSG(2, SFMT("g2_lookup2: l_sql=%1", l_sql))
+		GL_DBGMSG(2, SFMT("lookup: l_sql=%1", l_sql))
 		TRY
 			EXECUTE IMMEDIATE l_sql
 			RETURN FALSE
@@ -519,7 +518,7 @@ PRIVATE FUNCTION (this lookup) update(l_key STRING) RETURNS BOOLEAN
 				LET l_accept = TRUE
 				EXIT WHILE
 			OTHERWISE
-				GL_DBGMSG(2, "g2_lookup2: Unhandled Event:" || l_event)
+				GL_DBGMSG(2, "lookup: Unhandled Event:" || l_event)
 		END CASE
 	END WHILE
 	CALL this.inputVBox.setAttribute("hidden", TRUE)
@@ -560,7 +559,7 @@ PRIVATE FUNCTION (this lookup) update(l_key STRING) RETURNS BOOLEAN
 								l_dia.getFieldValue(this.fields[1].name.trimRight())))
 	END IF
 
-	GL_DBGMSG(2, SFMT("g2_lookup2: l_sql=%1", l_sql))
+	GL_DBGMSG(2, SFMT("lookup: l_sql=%1", l_sql))
 	TRY
 		EXECUTE IMMEDIATE l_sql
 	CATCH

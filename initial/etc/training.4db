@@ -13,6 +13,10 @@
   <ExtractionSettings last="SQLite">
     <ExtractionOptions casens="LowerCase" cvmeth="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" ignerr="true" systab="false" type="SQLite"/>
   </ExtractionSettings>
+  <Table active="true" name="countries" status="U" uuid="db/table3">
+    <Column fglLength="3" fglType="0" name="country_code" notNull="false" order="1" status="U" uuid="db/column31"/>
+    <Column fglLength="40" fglType="201" name="name" notNull="false" order="2" status="U" uuid="db/column32"/>
+  </Table>
   <Table active="true" name="customers" status="U" uuid="db/table2">
     <Column fglLength="8" fglType="0" name="cust_code" notNull="false" order="1" status="U" uuid="db/column8"/>
     <Column fglLength="50" fglType="201" name="cust_name" notNull="false" order="2" status="U" uuid="db/column9"/>
@@ -44,7 +48,7 @@
   <Views ActiveView="View-1" showLabels="true">
     <View Name="View-1">
       <Layout>
-        <![CDATA[AAAAAgAAABIAZABiAC8AdABhAGIAbABlADIAAAAAAAAAAEA0AAAAAAAAAAAAAAAAAAABAAAAEgBkAGIALwB0AGEAYgBsAGUAN0B2UAAAAAAAQDoAAAAAAAA/YGJN0vGp/AE=]]>
+        <![CDATA[AAAAAgAAABIAZABiAC8AdABhAGIAbABlADNAhTAAAAAAAEA5AAAAAAAAP3BiTdLxqfwBAAAAEgBkAGIALwB0AGEAYgBsAGUAMgAAAAAAAAAAQDQAAAAAAAAAAAAAAAAAAAEAAAASAGQAYgAvAHQAYQBiAGwAZQA3QHZQAAAAAABAOgAAAAAAAD9gYk3S8an8AQ==]]>
       </Layout>
     </View>
   </Views>

@@ -3,6 +3,7 @@ IMPORT os
 
 PUBLIC DEFINE m_debug_lev SMALLINT
 PUBLIC DEFINE m_mdi       BOOLEAN = FALSE
+PUBLIC DEFINE m_client    STRING
 DEFINE m_log_file         STRING
 DEFINE m_log              base.Channel
 
@@ -36,41 +37,67 @@ END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 -- Initialize the program environment
 FUNCTION init() RETURNS()
-	DEFINE l_contName STRING
-	DEFINE n          om.DomNode
+
 	LET m_debug_lev = 2
 	CALL log(1, SFMT("Program %1 Started - debug: %2", base.Application.getProgramName(), m_debug_lev))
+
+-- don't bother switch MDI setting unless we are passed M or S
 	IF base.Application.getArgument(1) = "M" THEN
-		IF base.Application.getProgramName() = "menu" THEN
-			LET l_contName = SFMT("cont%1", fgl_getpid())
-			CALL fgl_setenv("CONTAINER", l_contName)
-			CALL ui.Interface.setType("container")
-			CALL ui.Interface.setName(l_contName)
-			CALL log(1, SFMT("Program is MDI Container, name: '%1'", l_contName))
-			LET m_mdi = TRUE
-		ELSE
-			LET l_contName = fgl_getenv("CONTAINER")
-			IF l_contName.getLength() < 1 THEN
-				CALL log(1, "Program passed 'M' but no container name is set, so working SDI.")
-			ELSE
-				CALL ui.Interface.setType("child")
-				CALL ui.Interface.setContainer(l_contName)
-				CALL log(1, SFMT("Program is MDI Child, Container is '%1'", l_contName))
-				LET m_mdi = TRUE
-			END IF
-		END IF
-	ELSE
-		CALL log(1, "Program is SDI")
+		LET m_mdi = TRUE
+		CALL switch_mdi(m_mdi)
 	END IF
+	IF base.Application.getArgument(1) = "S" THEN
+		LET m_mdi = FALSE
+		CALL switch_mdi(m_mdi)
+	END IF
+	LET m_client = ui.Interface.getFrontEndName()
+	CALL log(1, SFMT("Program %1 Started - debug: %2 mdi: %3 client: %4", base.Application.getProgramName(), m_debug_lev, m_mdi, m_client))
+
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
 -- change the style name to handle MDI / SDI styles
-	LET n =
-			ui.Interface.getRootNode().selectByPath(SFMT("//Style[@name='UserInterface.%1']", IIF(m_mdi, "mdi", "sdi")))
-					.item(1)
-	IF n IS NOT NULL THEN
-		CALL n.setAttribute("name", "UserInterface")
-	ELSE
-		CALL log(0, "Failed to find UserInterface style")
+FUNCTION switch_mdi(l_mdi BOOLEAN)
+	DEFINE n, l_n_ui, n_sl om.DomNode
+	DEFINE l_nl            om.NodeList
+	DEFINE l_style STRING
+
+	LET n_sl = ui.Interface.getRootNode().selectByPath("//StyleList").item(1)
+	IF n_sl IS NULL THEN
+		CALL log(0, "Failed to find styleList")
+		RETURN
 	END IF
+--	CALL n_sl.writeXml("sl_1.xml")
+
+-- find the style attributes we need to copy
+	LET l_style = SFMT("//Style[@name='UserInterface.%1']/StyleAttribute", IIF(l_mdi,"mdi","sdi"))
+	LET l_nl = ui.Interface.getRootNode().selectByPath(l_style)
+	IF l_nl.getLength() = 0 THEN
+		CALL log(0,SFMT("Failed to find style attributes for %1", l_style))
+		RETURN
+	ELSE
+		CALL log(1,SFMT("Found %1 attributes on %2", l_nl.getLength(), l_style))
+	END IF
+
+-- find and create/recreate the UserInterface style
+	LET l_n_ui = ui.Interface.getRootNode().selectByPath("//Style[@name='UserInterface']").item(1)
+	IF l_n_ui IS NOT NULL THEN
+		CALL log(1, "Remove style 'UserInterface'")
+		CALL n_sl.removeChild(l_n_ui)
+	END IF
+	CALL log(1, "Create style 'UserInterface'")
+	LET l_n_ui = n_sl.createChild("Style")
+	CALL l_n_ui.setAttribute("name", "UserInterface")
+
+-- add the style attributes to the UserInterface style
+	VAR x INT
+	FOR x = 1 TO l_nl.getLength()
+		CALL log(1, SFMT("Add styleAttribute %1=%2", l_nl.item(x).getAttributeValue(1),l_nl.item(x).getAttributeValue(2)))
+		LET n = l_n_ui.createChild("StyleAttribute")
+		CALL n.setAttribute(l_nl.item(x).getAttributeName(1), l_nl.item(x).getAttributeValue(1)) -- name
+		CALL n.setAttribute(l_nl.item(x).getAttributeName(2), l_nl.item(x).getAttributeValue(2)) -- value
+	END FOR
+	CALL ui.Interface.refresh()
+--	CALL n_sl.writeXml("sl_2.xml")
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 -- Exit the program and log the exit
@@ -149,10 +176,10 @@ FUNCTION setActions(d ui.Dialog, l_cnt INT, l_row INT, l_rowActions STRING) RETU
 		RETURN
 	END IF
 
-	CALL d.setActionActive("next", (l_cnt>l_row))
-	CALL d.setActionActive("last", (l_cnt>l_row))
+	CALL d.setActionActive("next", (l_cnt > l_row))
+	CALL d.setActionActive("last", (l_cnt > l_row))
 
-	CALL d.setActionActive("previous", (l_row>1))
-	CALL d.setActionActive("first", (l_row>1))
+	CALL d.setActionActive("previous", (l_row > 1))
+	CALL d.setActionActive("first", (l_row > 1))
 
 END FUNCTION
