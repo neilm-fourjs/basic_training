@@ -52,7 +52,10 @@ FUNCTION init() RETURNS()
 		CALL switch_mdi(m_mdi)
 	END IF
 	LET m_client = ui.Interface.getFrontEndName()
-	CALL log(1, SFMT("Program %1 Started - debug: %2 mdi: %3 client: %4", base.Application.getProgramName(), m_debug_lev, m_mdi, m_client))
+	CALL log(
+			1,
+			SFMT("Program %1 Started - debug: %2 mdi: %3 client: %4",
+					base.Application.getProgramName(), m_debug_lev, m_mdi, m_client))
 
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
@@ -60,7 +63,7 @@ END FUNCTION
 FUNCTION switch_mdi(l_mdi BOOLEAN)
 	DEFINE n, l_n_ui, n_sl om.DomNode
 	DEFINE l_nl            om.NodeList
-	DEFINE l_style STRING
+	DEFINE l_style         STRING
 
 	LET n_sl = ui.Interface.getRootNode().selectByPath("//StyleList").item(1)
 	IF n_sl IS NULL THEN
@@ -70,13 +73,13 @@ FUNCTION switch_mdi(l_mdi BOOLEAN)
 --	CALL n_sl.writeXml("sl_1.xml")
 
 -- find the style attributes we need to copy
-	LET l_style = SFMT("//Style[@name='UserInterface.%1']/StyleAttribute", IIF(l_mdi,"mdi","sdi"))
-	LET l_nl = ui.Interface.getRootNode().selectByPath(l_style)
+	LET l_style = SFMT("//Style[@name='UserInterface.%1']/StyleAttribute", IIF(l_mdi, "mdi", "sdi"))
+	LET l_nl    = ui.Interface.getRootNode().selectByPath(l_style)
 	IF l_nl.getLength() = 0 THEN
-		CALL log(0,SFMT("Failed to find style attributes for %1", l_style))
+		CALL log(0, SFMT("Failed to find style attributes for %1", l_style))
 		RETURN
 	ELSE
-		CALL log(1,SFMT("Found %1 attributes on %2", l_nl.getLength(), l_style))
+		CALL log(1, SFMT("Found %1 attributes on %2", l_nl.getLength(), l_style))
 	END IF
 
 -- find and create/recreate the UserInterface style
@@ -92,7 +95,7 @@ FUNCTION switch_mdi(l_mdi BOOLEAN)
 -- add the style attributes to the UserInterface style
 	VAR x INT
 	FOR x = 1 TO l_nl.getLength()
-		CALL log(1, SFMT("Add styleAttribute %1=%2", l_nl.item(x).getAttributeValue(1),l_nl.item(x).getAttributeValue(2)))
+		CALL log(1, SFMT("Add styleAttribute %1=%2", l_nl.item(x).getAttributeValue(1), l_nl.item(x).getAttributeValue(2)))
 		LET n = l_n_ui.createChild("StyleAttribute")
 		CALL n.setAttribute(l_nl.item(x).getAttributeName(1), l_nl.item(x).getAttributeValue(1)) -- name
 		CALL n.setAttribute(l_nl.item(x).getAttributeName(2), l_nl.item(x).getAttributeValue(2)) -- value
@@ -186,11 +189,18 @@ FUNCTION setActions(d ui.Dialog, l_cnt INT, l_row INT, l_rowActions STRING) RETU
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 --
-FUNCTION report_setup() RETURNS (om.SaxDocumentHandler)
-			IF NOT greruntime.fgl_report_loadCurrentSettings(NULL) THEN
-				EXIT PROGRAM
-			END IF
-			CALL greruntime.fgl_report_selectDevice("PDF")
-			CALL greruntime.fgl_report_selectPreview("true")
-			RETURN greruntime.fgl_report_commitCurrentSettings()
+FUNCTION report_setup(l_rptName STRING) RETURNS(om.SaxDocumentHandler)
+	IF NOT greruntime.fgl_report_loadCurrentSettings(SFMT("%1.4rp", l_rptName)) THEN
+		EXIT PROGRAM
+	END IF
+--    	CALL greruntime.fgl_report_configureDistributedProcessing("localhost", 6299)
+--	RUN "fglWrt -a info"
+	CALL greruntime.fgl_report_selectDevice("PDF")
+	CALL greruntime.fgl_report_selectPreview(TRUE)
+	CALL greruntime.fgl_report_setOutputFileName(SFMT("%1.pdf", l_rptName))
+
+	IF fgl_getEnv("GREDEBUG") = "TRUE" THEN
+		RETURN greruntime.fgl_report_createProcessLevelDataFile(SFMT("%1.xml", l_rptName))
+	END IF
+	RETURN greruntime.fgl_report_commitCurrentSettings()
 END FUNCTION

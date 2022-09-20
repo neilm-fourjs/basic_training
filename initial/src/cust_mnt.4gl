@@ -246,7 +246,9 @@ FUNCTION doReport()
 	DEFINE l_cust        RECORD LIKE customers.*
 	DEFINE l_row         INTEGER = 0
 	DEFINE l_rpt_started BOOLEAN = FALSE
+
 	DEFINE l_handler     om.SaxDocumentHandler
+	DISPLAY SFMT("FGLRESOUCEPATH=%1", fgl_getEnv("FGLRESOURCEPATH"))
 	DECLARE rpt_cur CURSOR FOR SELECT * FROM customers
 	FOREACH rpt_cur INTO l_cust.*
 		IF l_cust.cust_code IS NULL THEN
@@ -256,7 +258,7 @@ FUNCTION doReport()
 		IF l_row = 1 THEN
 			LET l_rpt_started = TRUE
 
-			LET l_handler = lib.report_setup()
+			LET l_handler = lib.report_setup("cust1")
 			START REPORT rpt1 TO XML HANDLER l_handler
 
 		END IF
@@ -268,12 +270,14 @@ FUNCTION doReport()
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 REPORT rpt1(l_row INT, l_cust RECORD LIKE customers.*)
+	DEFINE l_rptTitle    STRING = "Customer Report #1"
+	DEFINE l_today DATE
 	FORMAT
 
 		FIRST PAGE HEADER
-			PRINT "Code", COLUMN 15, "Customer Name"
-
+			LET l_today = TODAY
+			PRINT l_rptTitle,  l_today
 		ON EVERY ROW
-			PRINT l_cust.cust_code, COLUMN 15, l_cust.cust_name
+			PRINT l_row, l_cust.*
 
 END REPORT

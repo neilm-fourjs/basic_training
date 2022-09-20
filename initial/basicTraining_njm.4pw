@@ -75,9 +75,10 @@
       <Directory includedFiles="*.png,*.jpg,*.ttf,image2font.txt" label="Images" sourceDirectory="$(ProjectDir)/pics"/>
       <Directory destinationDirectory="$(RootDir)/etc" includedFiles="*.4ad,*.4st,*.xcf,*.4tm,*.4tb,*.4sm,*.42s,*.iem,*.unl" label="Resources" recursive="false" sourceDirectory="$(ProjectDir)/etc"/>
     </Package>
-    <Application binaryName="cust_mnt" dependencies="14000" id="1257009096" label="cust_mnt">
+    <Application binaryName="cust_mnt" dependencies="14000,-2072896198" id="1257009096" label="cust_mnt">
       <Configuration commandLineArguments="S E" id="579846818" label="Enquiry"/>
       <Configuration commandLineArguments="S" id="-956009109" label="SDI"/>
+      <File filePath="etc/cust1.4rp"/>
       <File compilerOptions="--build-rdd" filePath="src/cust_mnt.4gl"/>
       <File filePath="src/cust_mnt.per"/>
       <File filePath="src/cust_mnt_arr.per"/>
