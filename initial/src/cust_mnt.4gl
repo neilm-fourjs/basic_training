@@ -1,6 +1,7 @@
 IMPORT FGL fgldialog
 IMPORT FGL lib
 IMPORT FGL lookup
+IMPORT FGL greruntime
 &include "schema.inc"
 
 DEFINE m_arr    DYNAMIC ARRAY OF RECORD LIKE customers.*
@@ -103,6 +104,7 @@ MAIN
 
 			ON ACTION update
 				NEXT FIELD cust_code
+
 		END DISPLAY
 
 		INPUT BY NAME l_cust.* ATTRIBUTE(WITHOUT DEFAULTS)
@@ -177,6 +179,9 @@ MAIN
 				NEXT FIELD a_cust_code
 		END INPUT
 
+		ON ACTION report
+			CALL doReport()
+
 		ON ACTION about
 			CALL lib.about()
 
@@ -236,3 +241,39 @@ FUNCTION doConstruct() RETURNS()
 	END IF
 	LET m_where = l_where
 END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+FUNCTION doReport()
+	DEFINE l_cust        RECORD LIKE customers.*
+	DEFINE l_row         INTEGER = 0
+	DEFINE l_rpt_started BOOLEAN = FALSE
+	DEFINE l_handler     om.SaxDocumentHandler
+	DECLARE rpt_cur CURSOR FOR SELECT * FROM customers
+	FOREACH rpt_cur INTO l_cust.*
+		IF l_cust.cust_code IS NULL THEN
+			CONTINUE FOREACH
+		END IF
+		LET l_row += 1
+		IF l_row = 1 THEN
+			LET l_rpt_started = TRUE
+
+			LET l_handler = lib.report_setup()
+			START REPORT rpt1 TO XML HANDLER l_handler
+
+		END IF
+		OUTPUT TO REPORT rpt1(l_row, l_cust.*)
+	END FOREACH
+	IF l_rpt_started THEN
+		FINISH REPORT rpt1
+	END IF
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+REPORT rpt1(l_row INT, l_cust RECORD LIKE customers.*)
+	FORMAT
+
+		FIRST PAGE HEADER
+			PRINT "Code", COLUMN 15, "Customer Name"
+
+		ON EVERY ROW
+			PRINT l_cust.cust_code, COLUMN 15, l_cust.cust_name
+
+END REPORT

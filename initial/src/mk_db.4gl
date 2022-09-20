@@ -93,6 +93,7 @@ FUNCTION insertTestData()
 
 	CALL lib.log(1, "Loading Customers ...")
 	LOAD FROM "../etc/customers.unl" INSERT INTO customers
+
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION insMenu(l_menu RECORD LIKE menus.*)

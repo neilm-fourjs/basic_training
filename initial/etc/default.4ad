@@ -42,6 +42,7 @@ Property of Four Js*
   <ActionDefault name="dialogtouched" validate="no" defaultView="no"  contextMenu="no"/>
 
   <ActionDefault name="save" text="Save" image="fa-floppy-o" acceleratorName="Return" acceleratorName2="Enter" contextMenu="no"/>
+  <ActionDefault name="report" text="Report" image="fa-print" acceleratorName="control-p" contextMenu="no"/>
 
   <ActionDefault name="about" validate="no" text="About" image="fa-info" comment="Information about this program" acceleratorName="f1" contextMenu="no"/>
   <ActionDefault name="search" validate="no" text="Search" image="fa-search" comment="Query by example" acceleratorName="f7" contextMenu="no"/>

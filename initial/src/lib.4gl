@@ -1,4 +1,5 @@
 IMPORT FGL fgldialog
+IMPORT FGL greruntime
 IMPORT os
 
 PUBLIC DEFINE m_debug_lev SMALLINT
@@ -182,4 +183,14 @@ FUNCTION setActions(d ui.Dialog, l_cnt INT, l_row INT, l_rowActions STRING) RETU
 	CALL d.setActionActive("previous", (l_row > 1))
 	CALL d.setActionActive("first", (l_row > 1))
 
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+--
+FUNCTION report_setup() RETURNS (om.SaxDocumentHandler)
+			IF NOT greruntime.fgl_report_loadCurrentSettings(NULL) THEN
+				EXIT PROGRAM
+			END IF
+			CALL greruntime.fgl_report_selectDevice("PDF")
+			CALL greruntime.fgl_report_selectPreview("true")
+			RETURN greruntime.fgl_report_commitCurrentSettings()
 END FUNCTION
