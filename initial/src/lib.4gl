@@ -190,6 +190,8 @@ END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 --
 FUNCTION report_setup(l_rptName STRING) RETURNS(om.SaxDocumentHandler)
+	DEFINE l_handler om.SaxDocumentHandler
+
 	IF NOT greruntime.fgl_report_loadCurrentSettings(SFMT("%1.4rp", l_rptName)) THEN
 		EXIT PROGRAM
 	END IF
@@ -200,7 +202,13 @@ FUNCTION report_setup(l_rptName STRING) RETURNS(om.SaxDocumentHandler)
 	CALL greruntime.fgl_report_setOutputFileName(SFMT("%1.pdf", l_rptName))
 
 	IF fgl_getEnv("GREDEBUG") = "TRUE" THEN
-		RETURN greruntime.fgl_report_createProcessLevelDataFile(SFMT("%1.xml", l_rptName))
+		LET l_handler = greruntime.fgl_report_createProcessLevelDataFile(SFMT("%1.xml", l_rptName))
+	ELSE
+		LET l_handler = greruntime.fgl_report_commitCurrentSettings()
 	END IF
-	RETURN greruntime.fgl_report_commitCurrentSettings()
+	IF l_handler IS NULL THEN
+		CALL fgl_winMessage("Error", SFMT("Report Initialization for '%1' failed!", l_rptName), "exclamation")
+		EXIT PROGRAM 1
+	END IF
+	RETURN l_handler
 END FUNCTION

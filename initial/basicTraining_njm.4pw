@@ -68,21 +68,44 @@
   <LanguageList version="1.0"/>
   <PlatformList version="1.0"/>
   <Group environment="value:MDI=1,value:DBNAME=../etc/training.db" id="75644415" label="basicTraining" language="Genero">
-    <Package binaryName="basicTrainingGar" dependencies="-1001935388,958747858,1257009096,18736,14000,-596818949,1986,-2072896198" description="Basic Training" id="-35518525" label="basicTrainingGar" platform="Genero Application Server">
+    <Group id="565413357" label="Apps">
+      <Application binaryName="cust_mnt" dependencies="14000,-2072896198" id="1257009096" label="cust_mnt">
+        <Configuration commandLineArguments="S E" id="579846818" label="Enquiry"/>
+        <Configuration commandLineArguments="S" id="-956009109" label="SDI"/>
+        <File filePath="etc/cust1.4rp"/>
+        <File compilerOptions="--build-rdd" filePath="src/cust_mnt.4gl"/>
+        <File filePath="src/cust_mnt.per"/>
+        <File filePath="src/cust_mnt_arr.per"/>
+      </Application>
+      <Application binaryName="menu" dependencies="14000,1986" id="18736" label="menu" language="Genero (no link)">
+        <VirtualFolder label="forms">
+          <File filePath="src/menu.per"/>
+          <File filePath="src/menu_sg.per"/>
+        </VirtualFolder>
+        <VirtualFolder label="src">
+          <File filePath="src/menu.4gl"/>
+        </VirtualFolder>
+        <Configuration commandLineArguments="M menu_sg" id="-1429969501" label="Menu"/>
+        <Configuration commandLineArguments="S" id="1916496889" label="Menu SDI"/>
+      </Application>
+      <Application binaryName="menu_mnt" dependencies="-2072896198,14000,1986" id="-596818949" label="menu_mnt">
+        <Configuration commandLineArguments="S" id="-1819640189" label="Configuration"/>
+        <File filePath="src/menu_mnt.4gl"/>
+        <File filePath="src/menu_mnt.per"/>
+      </Application>
+      <Application binaryName="stk_mnt" dependencies="1986,-2072896198,14000" id="-2092479918" label="stk_mnt">
+        <Configuration id="-390406718" label="Configuration"/>
+        <File filePath="src/stk_mnt.4gl"/>
+        <File filePath="../../../../../../opt/fourJs/all/my_github/basicTraining_njm/initial/src/stk_mnt.per"/>
+      </Application>
+    </Group>
+    <Package binaryName="basicTrainingGar" dependencies="-1001935388,958747858,1257009096,18736,14000,-596818949,1986,-2072896198,-2092479918" description="Basic Training" id="-35518525" label="basicTrainingGar" platform="Genero Application Server">
       <DynamicProperty name="packageId" value="basicTraining"/>
       <DynamicProperty name="packageLabel" value="basicTraining"/>
       <Directory destinationDirectory="$(RootDir)/bin" excludedFiles="Test.42r" includedFiles="*.42?" label="Binaries" recursive="false" sourceDirectory="$(ProjectDir)/bin"/>
       <Directory includedFiles="*.png,*.jpg,*.ttf,image2font.txt" label="Images" sourceDirectory="$(ProjectDir)/pics"/>
       <Directory destinationDirectory="$(RootDir)/etc" includedFiles="*.4ad,*.4st,*.xcf,*.4tm,*.4tb,*.4sm,*.42s,*.iem,*.unl" label="Resources" recursive="false" sourceDirectory="$(ProjectDir)/etc"/>
     </Package>
-    <Application binaryName="cust_mnt" dependencies="14000,-2072896198" id="1257009096" label="cust_mnt">
-      <Configuration commandLineArguments="S E" id="579846818" label="Enquiry"/>
-      <Configuration commandLineArguments="S" id="-956009109" label="SDI"/>
-      <File filePath="etc/cust1.4rp"/>
-      <File compilerOptions="--build-rdd" filePath="src/cust_mnt.4gl"/>
-      <File filePath="src/cust_mnt.per"/>
-      <File filePath="src/cust_mnt_arr.per"/>
-    </Application>
     <Library binaryName="Databases" id="1986" label="Databases">
       <File filePath="etc/training.4db"/>
     </Library>
@@ -99,22 +122,6 @@
     <Application binaryName="mdiSwitch" dependencies="14000,-2072896198" id="958747858" label="mdiSwitch">
       <Configuration commandLineArguments="S cust_mnt E" id="1596935185" label="Configuration"/>
       <File filePath="src/mdiSwitch.4gl"/>
-    </Application>
-    <Application binaryName="menu" dependencies="14000,1986" id="18736" label="menu" language="Genero (no link)">
-      <VirtualFolder label="forms">
-        <File filePath="src/menu.per"/>
-        <File filePath="src/menu_sg.per"/>
-      </VirtualFolder>
-      <VirtualFolder label="src">
-        <File filePath="src/menu.4gl"/>
-      </VirtualFolder>
-      <Configuration commandLineArguments="M menu_sg" id="-1429969501" label="Menu"/>
-      <Configuration commandLineArguments="S" id="1916496889" label="Menu SDI"/>
-    </Application>
-    <Application binaryName="menu_mnt" dependencies="-2072896198,14000,1986" id="-596818949" label="menu_mnt">
-      <Configuration commandLineArguments="S" id="-1819640189" label="Configuration"/>
-      <File filePath="src/menu_mnt.4gl"/>
-      <File filePath="src/menu_mnt.per"/>
     </Application>
     <Application binaryName="mk_db" dependencies="14000" id="-1001935388" label="mk_db">
       <Configuration id="959766607" label="Configuration"/>

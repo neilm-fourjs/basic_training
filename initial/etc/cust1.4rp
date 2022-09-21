@@ -26,6 +26,7 @@
                             <WORDBOX name="l_cust.cust_code Title" designHints="fieldName:l_cust.cust_code;fieldRole:TableColumnTitle" class="grwTableStringColumnTitle" width="{max(width(&quot;{&quot;Cust Code&quot;.translate()}&quot;),width(&quot;M&quot;)*8)}" floatingBehavior="enclosed" text="Cust Code" localizeText="true"/>
                             <WORDBOX name="l_cust.cust_name Title" designHints="fieldName:l_cust.cust_name;fieldRole:TableColumnTitle" class="grwTableStringColumnTitle" width="{max(width(&quot;{&quot;Cust Name&quot;.translate()}&quot;),width(&quot;M&quot;)*20)}" floatingBehavior="enclosed" text="Name" localizeText="true"/>
                             <WORDBOX name="l_cust.credit_limit Title" designHints="fieldName:l_cust.credit_limit;fieldRole:TableColumnTitle" class="grwTableNumericColumnTitle" width="{max(width(&quot;{&quot;Credit Limit&quot;.translate()}&quot;),width(&quot;-0,000,000,000.00&quot;))}" floatingBehavior="enclosed" textAlignment="right" text="Credit Limit" localizeText="true"/>
+                            <WORDBOX name="l_cust.country Title" designHints="fieldName:l_cust.country;fieldRole:TableColumnTitle" class="grwTableStringColumnTitle" width="{max(width(&quot;{&quot;Country&quot;.translate()}&quot;),width(&quot;W&quot;)*3)}" floatingBehavior="enclosed" text="Country" localizeText="true"/>
                         </MINIPAGE>
                         <MINIPAGE name="Separator" width="1" length="max" bgColor="#000000" layoutDirection="leftToRight"/>
                     </LAYOUTNODE>
@@ -39,6 +40,8 @@
                             <WORDWRAPBOX name="l_cust.cust_name Value" designHints="fieldName:l_cust.cust_name;fieldRole:TableColumnValue" class="grwTableStringColumnValue" width="{max(width(&quot;{&quot;Cust Name&quot;.translate()}&quot;),width(&quot;M&quot;)*20)}" floatingBehavior="enclosed" text="{{l_cust.cust_name}}"/>
                             <rtl:input-variable name="l_cust.credit_limit" type="FGLNumeric" expectedLocation="expectedHere"/>
                             <DECIMALFORMATBOX name="l_cust.credit_limit Value" designHints="fieldName:l_cust.credit_limit;fieldRole:TableColumnValue" class="grwTableNumericColumnValue" width="{max(width(&quot;{&quot;Credit Limit&quot;.translate()}&quot;),width(&quot;-0,000,000,000.00&quot;))}" anchorX="1" floatingBehavior="enclosed" textAlignment="right" format="-,---,---,--&amp;.&amp;&amp;" value="{{l_cust.credit_limit}}"/>
+                            <rtl:input-variable name="l_cust.country" type="FGLString" expectedLocation="expectedHere"/>
+                            <WORDBOX name="l_cust.country Value" designHints="fieldName:l_cust.country;fieldRole:TableColumnValue" class="grwStringValue" width="{max(width(&quot;{&quot;Country&quot;.translate()}&quot;),width(&quot;W&quot;)*3)}" floatingBehavior="enclosed" text="{{l_cust.country}}"/>
                         </MINIPAGE>
                     </rtl:match>
                 </MINIPAGE>

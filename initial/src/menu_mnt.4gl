@@ -26,9 +26,12 @@ MAIN
 		END DISPLAY
 		INPUT BY NAME l_menu.* ATTRIBUTE(WITHOUT DEFAULTS)
 		END INPUT
-		ON ACTION about CALL lib.about()
-		ON ACTION close EXIT DIALOG
-		ON ACTION quit EXIT DIALOG
+		ON ACTION about
+			CALL lib.about()
+		ON ACTION close
+			EXIT DIALOG
+		ON ACTION quit
+			EXIT DIALOG
 	END DIALOG
 
 	CALL lib.exit_program(0, "Program Finished")
