@@ -244,7 +244,7 @@ FUNCTION doReport()
 
 	DEFINE l_handler om.SaxDocumentHandler
 	DISPLAY SFMT("FGLRESOUCEPATH=%1", fgl_getEnv("FGLRESOURCEPATH"))
-	DECLARE rpt_cur CURSOR FOR SELECT * FROM stock
+	DECLARE rpt_cur CURSOR FOR SELECT * FROM stock ORDER BY stock_cat, stock_code
 	FOREACH rpt_cur INTO l_stk.*
 		IF l_stk.stock_code IS NULL THEN
 			CONTINUE FOREACH
@@ -253,7 +253,7 @@ FUNCTION doReport()
 		IF l_row = 1 THEN
 			LET l_rpt_started = TRUE
 
-			LET l_handler = lib.report_setup("stk1")
+			LET l_handler = lib.report_setup("stock1")
 			START REPORT rpt1 TO XML HANDLER l_handler
 
 		END IF
@@ -267,11 +267,23 @@ END FUNCTION
 REPORT rpt1(l_row INT, l_stk RECORD LIKE stock.*)
 	DEFINE l_rptTitle STRING = "Stock Report #1"
 	DEFINE l_today    DATE
+	DEFINE l_cat_desc LIKE stock_cat.cat_name
+
+	ORDER EXTERNAL BY l_stk.stock_cat
+
 	FORMAT
 
 		FIRST PAGE HEADER
 			LET l_today = TODAY
 			PRINT l_rptTitle, l_today
+
+		BEFORE GROUP OF l_stk.stock_cat
+			SELECT cat_name INTO l_cat_desc FROM stock_cat WHERE catid = l_stk.stock_cat
+			IF STATUS = NOTFOUND THEN
+				LET l_cat_desc = "Not Found!"
+			END IF
+			PRinT l_cat_desc
+
 		ON EVERY ROW
 			PRINT l_row, l_stk.*
 

@@ -95,8 +95,9 @@
       </Application>
       <Application binaryName="stk_mnt" dependencies="1986,-2072896198,14000" id="-2092479918" label="stk_mnt">
         <Configuration id="-390406718" label="Configuration"/>
-        <File filePath="src/stk_mnt.4gl"/>
+        <File compilerOptions="--build-rdd" filePath="src/stk_mnt.4gl"/>
         <File filePath="../../../../../../opt/fourJs/all/my_github/basicTraining_njm/initial/src/stk_mnt.per"/>
+        <File filePath="etc/stock1.4rp"/>
       </Application>
     </Group>
     <Package binaryName="basicTrainingGar" dependencies="-1001935388,958747858,1257009096,18736,14000,-596818949,1986,-2072896198,-2092479918" description="Basic Training" id="-35518525" label="basicTrainingGar" platform="Genero Application Server">
