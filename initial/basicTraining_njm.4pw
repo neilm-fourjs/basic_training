@@ -100,12 +100,12 @@
         <File filePath="etc/stock1.4rp"/>
       </Application>
     </Group>
-    <Package binaryName="basicTrainingGar" dependencies="-1001935388,958747858,1257009096,18736,14000,-596818949,1986,-2072896198,-2092479918" description="Basic Training" id="-35518525" label="basicTrainingGar" platform="Genero Application Server">
+    <Package binaryName="basicTrainingGar" dependencies="-1001935388,958747858,1257009096,18736,14000,-596818949,1986,-2072896198,-2092479918,1922628416" description="Basic Training" id="-35518525" label="basicTrainingGar" platform="Genero Application Server">
       <DynamicProperty name="packageId" value="basicTraining"/>
       <DynamicProperty name="packageLabel" value="basicTraining"/>
       <Directory destinationDirectory="$(RootDir)/bin" excludedFiles="Test.42r" includedFiles="*.42?" label="Binaries" recursive="false" sourceDirectory="$(ProjectDir)/bin"/>
       <Directory includedFiles="*.png,*.jpg,*.ttf,image2font.txt" label="Images" sourceDirectory="$(ProjectDir)/pics"/>
-      <Directory destinationDirectory="$(RootDir)/etc" includedFiles="*.4ad,*.4st,*.xcf,*.4tm,*.4tb,*.4sm,*.42s,*.iem,*.unl" label="Resources" recursive="false" sourceDirectory="$(ProjectDir)/etc"/>
+      <Directory destinationDirectory="$(RootDir)/etc" includedFiles="*.4ad,*.4st,*.xcf,*.4tm,*.4tb,*.4sm,*.42s,*.iem,*.unl,*.4rp" label="Resources" recursive="false" sourceDirectory="$(ProjectDir)/etc"/>
     </Package>
     <Library binaryName="Databases" id="1986" label="Databases">
       <File filePath="etc/training.4db"/>
@@ -114,19 +114,31 @@
       <File filePath="etc/bt.xcf"/>
       <File filePath="etc/default.4ad"/>
       <File filePath="etc/default.4st"/>
+      <File filePath="etc/wsbt.xcf"/>
     </Library>
     <Library binaryName="Library" dependencies="1986,-2072896198" id="14000" label="Library">
       <File filePath="src/lib.4gl"/>
       <File filePath="src/lookup.4gl"/>
       <File filePath="src/schema.inc"/>
     </Library>
-    <Application binaryName="mdiSwitch" dependencies="14000,-2072896198" id="958747858" label="mdiSwitch">
-      <Configuration commandLineArguments="S cust_mnt E" id="1596935185" label="Configuration"/>
-      <File filePath="src/mdiSwitch.4gl"/>
-    </Application>
-    <Application binaryName="mk_db" dependencies="14000" id="-1001935388" label="mk_db">
-      <Configuration id="959766607" label="Configuration"/>
-      <File filePath="src/mk_db.4gl"/>
-    </Application>
+    <Group id="1358016109" label="Utils">
+      <Application binaryName="mdiSwitch" dependencies="14000,-2072896198" id="958747858" label="mdiSwitch">
+        <Configuration commandLineArguments="S cust_mnt E" id="1596935185" label="Configuration"/>
+        <File filePath="src/mdiSwitch.4gl"/>
+      </Application>
+      <Application binaryName="mk_db" dependencies="14000" id="-1001935388" label="mk_db">
+        <Configuration id="959766607" label="Configuration"/>
+        <File filePath="src/mk_db.4gl"/>
+      </Application>
+    </Group>
+    <Group id="-438867700" label="WS">
+      <Application binaryName="ws_main" dependencies="1986" environment="value:FGLAPPSERVER=8080" id="1922628416" label="ws_main">
+        <Configuration id="-86167830" label="Configuration"/>
+        <File filePath="src/logging.4gl"/>
+        <File filePath="src/ws_lib.4gl"/>
+        <File filePath="src/ws_main.4gl"/>
+        <File filePath="src/ws_stk.4gl"/>
+      </Application>
+    </Group>
   </Group>
 </Project>
