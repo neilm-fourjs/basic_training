@@ -2,7 +2,7 @@
 -- fglrestful -o ws_clistk.4gl https://generodemos.dynu.net/g/ws/r/wsbt/stk?openapi.json
 --
 -- To generate the ws_clistk.4gl file from your local server use this command:
--- fglrestful -o ws_clistk.4gl http:/localhost/stk?openapi.json
+-- fglrestful -o ws_clistk.4gl http:/localhost:8080/stk?openapi.json
 IMPORT FGL ws_clistk
 
 MAIN
