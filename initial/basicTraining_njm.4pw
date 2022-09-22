@@ -96,7 +96,7 @@
       <Application binaryName="stk_mnt" dependencies="1986,-2072896198,14000" id="-2092479918" label="stk_mnt">
         <Configuration id="-390406718" label="Configuration"/>
         <File compilerOptions="--build-rdd" filePath="src/stk_mnt.4gl"/>
-        <File filePath="../../../../../../opt/fourJs/all/my_github/basicTraining_njm/initial/src/stk_mnt.per"/>
+        <File filePath="src/stk_mnt.per"/>
         <File filePath="etc/stock1.4rp"/>
       </Application>
       <Application binaryName="wscli" id="332484385" label="wscli">
