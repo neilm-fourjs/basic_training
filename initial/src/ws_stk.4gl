@@ -24,7 +24,7 @@ TYPE t_stk RECORD
 	messsage  STRING
 END RECORD
 
-PUBLIC DEFINE wsError RECORD ATTRIBUTE(WSError = "WS Error")
+PUBLIC DEFINE wsStockError RECORD ATTRIBUTE(WSError = "WSStockError")
   host    STRING,
   status  SMALLINT,
   message STRING
@@ -39,9 +39,9 @@ PUBLIC FUNCTION status() ATTRIBUTES(WSGet, WSPath = "/status", WSDescription = "
 END FUNCTION
 --------------------------------------------------------------------------------------
 -- Return the version of the service
-PUBLIC FUNCTION info() ATTRIBUTES(WSGet, WSPath = "/info", WSDescription = "Returns info")
+PUBLIC FUNCTION info() ATTRIBUTES(WSGet, WSPath = "/info", WSDescription = "Returns service info")
 		RETURNS t_serviceInfo
-	CALL logging.logIt("version", "Return version.")
+	CALL logging.logIt("info", "Return info.")
 	RETURN serviceInfo
 END FUNCTION
 ----------------------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ END FUNCTION
 -- Return the status of the service
 PUBLIC FUNCTION get(stockCode STRING ATTRIBUTE(WSParam))
 		ATTRIBUTES(WSGet, WSPath = "/get/{stockCode}", WSDescription = "Returns requested stock item",
-WSThrows = "404:@wsError") RETURNS t_stk
+WSThrows = "404:@wsStockError") RETURNS t_stk
 	DEFINE l_stk t_stk
 	CALL logging.logIt("get", SFMT("Getting '%1'.", stockCode))
 	SELECT * INTO l_stk.stockItem.* FROM stock WHERE stock_code = stockCode
@@ -72,8 +72,8 @@ WSThrows = "404:@wsError") RETURNS t_stk
 END FUNCTION
 --------------------------------------------------------------------------------
 FUNCTION setError(l_stat SMALLINT, l_msg STRING)
-  LET wsError.host    = fgl_getenv("HOSTNAME")
-  LET wsError.status  = l_stat
-  LET wsError.message = l_msg
-  CALL com.WebServiceEngine.SetRestError(l_stat, wsError)
+  LET wsStockError.host    = fgl_getenv("HOSTNAME")
+  LET wsStockError.status  = l_stat
+  LET wsStockError.message = l_msg
+  CALL com.WebServiceEngine.SetRestError(l_stat, wsStockError)
 END FUNCTION
