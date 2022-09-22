@@ -6,7 +6,7 @@ MAIN
 	DEFINE l_ret SMALLINT
 	DEFINE l_rec ws_clistk.t_stk
 
---	LET ws_clistk.Endpoint.Address.Uri = "http://localhost/g4/ws/r/wsbt/stk"
+--	LET ws_clistk.Endpoint.Address.Uri = "http://localhost:8080/stk"
 	LET ws_clistk.Endpoint.Address.Uri = "https://generodemos.dynu.net/g/ws/r/wsbt/stk"
 
 	CALL ws_clistk.get("FR02") RETURNING l_ret, l_rec
