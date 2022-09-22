@@ -140,6 +140,7 @@
       <Application binaryName="ws_main" dependencies="1986" environment="value:FGLAPPSERVER=8080" id="1922628416" label="ws_main">
         <Configuration id="-86167830" label="Configuration"/>
         <File filePath="src/logging.4gl"/>
+        <File filePath="src/ws_cst.4gl"/>
         <File filePath="src/ws_lib.4gl"/>
         <File filePath="src/ws_main.4gl"/>
         <File filePath="src/ws_stk.4gl"/>

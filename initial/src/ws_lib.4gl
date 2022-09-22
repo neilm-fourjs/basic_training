@@ -23,6 +23,7 @@ DEFINE m_service_desc STRING
 FUNCTION init(l_service STRING, l_service_desc STRING) RETURNS BOOLEAN
 	LET m_service      = l_service
 	LET m_service_desc = l_service_desc
+	CALL com.WebServiceEngine.RegisterRestService(m_service, m_service_desc)
 	CALL logging.logIt("init", SFMT("Server: %1", m_service))
 	RETURN TRUE
 END FUNCTION
@@ -32,9 +33,9 @@ FUNCTION process()
 	DEFINE l_ret SMALLINT
 	DEFINE l_msg STRING
 
-	CALL com.WebServiceEngine.RegisterRestService(m_service, m_service_desc)
+--	CALL com.WebServiceEngine.RegisterRestService(m_service, m_service_desc)
 
-	LET l_msg = SFMT("Service '%1' started.", m_service)
+	LET l_msg = "Service started."
 	CALL com.WebServiceEngine.Start()
 	WHILE TRUE
 		CALL logging.logIt("process", l_msg)

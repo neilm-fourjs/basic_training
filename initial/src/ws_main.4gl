@@ -14,6 +14,10 @@ MAIN
 		EXIT PROGRAM
 	END IF
 
+	IF NOT ws_lib.init("ws_cst", "cst") THEN
+		EXIT PROGRAM
+	END IF
+
 	CALL ws_lib.process()
 
 	CALL logging.logIt("MAIN", "Finished")
