@@ -30,7 +30,6 @@ PUBLIC DEFINE wsCustError RECORD ATTRIBUTE(WSError = "WSCustError")
 	message STRING
 END RECORD
 
-
 --------------------------------------------------------------------------------------
 -- Return a cust item
 PUBLIC FUNCTION getCust(custCode STRING ATTRIBUTE(WSParam))

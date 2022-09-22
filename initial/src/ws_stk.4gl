@@ -66,9 +66,9 @@ PUBLIC FUNCTION getItems()
 				WSThrows = "404:@wsStockError")
 		RETURNS t_stkItems
 	DEFINE l_stkItems t_stkItems
-	DEFINE i INTEGER
+	DEFINE i          INTEGER
 	DECLARE stkcur CURSOR FOR SELECT stock_code, description FROM stock ORDER BY stock_code
-	FOREACH stkcur INTO l_stkItems.items[i:=i+1].stock_code, l_stkItems.items[i].description
+	FOREACH stkcur INTO l_stkItems.items[i := i + 1].stock_code, l_stkItems.items[i].description
 	END FOREACH
 	CALL l_stkItems.items.deleteElement(i)
 	LET l_stkItems.no_of_item = l_stkItems.items.getLength()

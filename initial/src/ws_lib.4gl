@@ -2,16 +2,16 @@ IMPORT com
 IMPORT FGL logging
 
 PUBLIC TYPE t_serviceInfo RECORD
-  title         STRING,
-  description   STRING,
-  termOfService STRING,
-  contact RECORD
-    name  STRING,
-    url   STRING,
-    email STRING
-  END RECORD,
-  version STRING,
-  modules DYNAMIC ARRAY OF STRING
+	title         STRING,
+	description   STRING,
+	termOfService STRING,
+	contact RECORD
+		name  STRING,
+		url   STRING,
+		email STRING
+	END RECORD,
+	version STRING,
+	modules DYNAMIC ARRAY OF STRING
 END RECORD
 
 PUBLIC DEFINE m_stop BOOLEAN = FALSE
