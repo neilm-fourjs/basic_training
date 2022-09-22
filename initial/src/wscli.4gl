@@ -1,4 +1,5 @@
 
+-- fglrestful -o ws_clistk.4gl https://generodemos.dynu.net/g/ws/r/wsbt/stk?openapi.json
 IMPORT FGL ws_clistk
 
 MAIN
