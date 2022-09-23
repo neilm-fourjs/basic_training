@@ -243,7 +243,7 @@ FUNCTION doReport()
 	DEFINE l_rpt_started BOOLEAN = FALSE
 
 	DEFINE l_handler om.SaxDocumentHandler
-	DISPLAY SFMT("FGLRESOUCEPATH=%1", fgl_getEnv("FGLRESOURCEPATH"))
+	--DISPLAY SFMT("FGLRESOUCEPATH=%1", fgl_getEnv("FGLRESOURCEPATH"))
 	DECLARE rpt_cur CURSOR FOR SELECT * FROM stock ORDER BY stock_cat, stock_code
 	FOREACH rpt_cur INTO l_stk.*
 		IF l_stk.stock_code IS NULL THEN
@@ -261,6 +261,7 @@ FUNCTION doReport()
 	END FOREACH
 	IF l_rpt_started THEN
 		FINISH REPORT rpt1
+		CALL lib.report_finish()
 	END IF
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
