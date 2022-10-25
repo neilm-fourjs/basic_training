@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report:Report xmlns:rtl="http://www.4js.com/2004/RTL" xmlns:report="http://www.4js.com/2007/REPORT" xmlns="http://www.4js.com/2004/PXML" gstVersion="40100" version="7.00">
+    <report:Settings RWPageWidth="letterwidth" RWPageLength="letterlength" RWLeftMargin="0.5inch" RWTopMargin="0.5inch" RWRightMargin="0.5inch" RWBottomMargin="0.5inch">
+        <report:FormatList>
+            <report:Format-SVG/>
+            <report:Format-PDF/>
+            <report:Format-image/>
+        </report:FormatList>
+    </report:Settings>
+    <report:Data RWDataLocation="../src/stk_mnt.rdd" RWFglReportName="rpt1"/>
+    <report:Conflicts/>
+    <rtl:stylesheet>
+        <PXML>
+            <rtl:match name="Report" nameConstraint="Report" minOccurs="1" maxOccurs="1">
+                <MINIPAGE name="Page Root" width="max" length="max">
+                    <LAYOUTNODE name="Page Header" width="max" length="min" port="anyPageHeader">
+                        <MINIPAGE name="StripeLayouter3" width="min" length="max" layoutDirection="leftToRight">
+                            <rtl:input-variable name="l_rptTitle" type="FGLString" expectedLocation="expectedAhead"/>
+                            <WORDBOX name="Report Title" x="0" y="max/2" anchorX="0" anchorY="0.5" alignment="baseline" fontSize="25" baselineType="leftleft" floatingBehavior="enclosed" text="{{l_rptTitle}}"/>
+                            <PAGENOBOX name="PageNoBox" x="1.23857" y="max" anchorX="0" anchorY="1" alignment="baseline" baselineType="leftleft" floatingBehavior="enclosed" textAlignment="right"/>
+                        </MINIPAGE>
+                        <MINIPAGE name="Table Header" class="grwTableHeader" width="min" length="max" layoutDirection="leftToRight">
+                            <WORDBOX name="Spacer" alignment="baseline" baselineType="leftleft" port="itemSeparator" text=" "/>
+                        </MINIPAGE>
+                        <MINIPAGE name="Separator" width="1" length="max" bgColor="#000000" layoutDirection="leftToRight"/>
+                    </LAYOUTNODE>
+                    <rtl:match name="FirstPageHeader" nameConstraint="FirstPageHeader" minOccurs="0" maxOccurs="1"/>
+                    <rtl:match name="Group stock_cat" nameConstraint="Group" minOccurs="0" maxOccurs="unbounded">
+                        <rtl:match name="OnEveryRow" nameConstraint="OnEveryRow" minOccurs="0" maxOccurs="unbounded">
+                            <MINIPAGE name="Table Row" class="grwTableRow" width="min" length="max" layoutDirection="leftToRight">
+                                <WORDBOX name="Spacer_1" alignment="baseline" baselineType="leftleft" port="itemSeparator" text=" "/>
+                            </MINIPAGE>
+                        </rtl:match>
+                    </rtl:match>
+                </MINIPAGE>
+            </rtl:match>
+        </PXML>
+    </rtl:stylesheet>
+</report:Report>

@@ -8,10 +8,13 @@ PUBLIC DEFINE m_client    STRING
 DEFINE m_log_file         STRING
 DEFINE m_log              base.Channel
 
-PUBLIC DEFINE m_report_preview BOOLEAN = FALSE
-PUBLIC DEFINE m_report_output  STRING = "PDF"
-PUBLIC DEFINE m_report_outFile STRING -- file name to use if preview = false
-DEFINE m_report_outFile2       STRING -- actual output file name if preview = false
+-- Report Settings
+PUBLIC DEFINE m_report          STRING
+PUBLIC DEFINE m_report_ask      BOOLEAN = TRUE
+PUBLIC DEFINE m_report_preview  BOOLEAN = TRUE
+PUBLIC DEFINE m_report_output   STRING = "SVG"
+PUBLIC DEFINE m_report_outFile  STRING -- file name to use if preview = false
+PUBLIC DEFINE m_report_outFile2 STRING -- actual output file name if preview = false
 
 --------------------------------------------------------------------------------------------------------------
 -- Connect to the default database.
@@ -197,17 +200,21 @@ END FUNCTION
 FUNCTION report_setup(l_rptName STRING) RETURNS(om.SaxDocumentHandler)
 	DEFINE l_handler om.SaxDocumentHandler
 
-	IF NOT greruntime.fgl_report_loadCurrentSettings(SFMT("%1.4rp", l_rptName)) THEN
-		EXIT PROGRAM
-	END IF
 --    	CALL greruntime.fgl_report_configureDistributedProcessing("localhost", 6299)
 --	RUN "fglWrt -a info"
+	LET m_report = l_rptName
+	IF m_report_ask OR l_rptName.getIndexOf(",",1) > 0 THEN
+		IF NOT rpt_outputAsk(l_rptName) THEN RETURN NULL END IF
+	END IF
+	IF NOT greruntime.fgl_report_loadCurrentSettings(SFMT("%1.4rp", m_report)) THEN
+		EXIT PROGRAM
+	END IF
 	CALL greruntime.fgl_report_selectDevice(m_report_output)
 	CALL greruntime.fgl_report_selectPreview(m_report_preview)
 	LET m_report_outFile2 = NULL
 	IF NOT m_report_preview THEN
 		IF m_report_outFile IS NULL THEN
-			LET m_report_outFile2 = SFMT("%1.pdf", l_rptName)
+			LET m_report_outFile2 = SFMT("%1.pdf", m_report)
 		ELSE
 			LET m_report_outFile2 = m_report_outFile
 		END IF
@@ -215,7 +222,7 @@ FUNCTION report_setup(l_rptName STRING) RETURNS(om.SaxDocumentHandler)
 	END IF
 
 	IF fgl_getEnv("GREDEBUG") = "TRUE" THEN
-		LET l_handler = greruntime.fgl_report_createProcessLevelDataFile(SFMT("%1.xml", l_rptName))
+		LET l_handler = greruntime.fgl_report_createProcessLevelDataFile(SFMT("%1.xml", m_report))
 	ELSE
 		LET l_handler = greruntime.fgl_report_commitCurrentSettings()
 	END IF
@@ -223,8 +230,34 @@ FUNCTION report_setup(l_rptName STRING) RETURNS(om.SaxDocumentHandler)
 		CALL fgl_winMessage("Error", SFMT("Report Initialization for '%1' failed!", l_rptName), "exclamation")
 		EXIT PROGRAM 1
 	END IF
-	CALL log(1,SFMT("Report Started, preview=%1 output=%2 file=%3", m_report_preview, m_report_output, m_report_outFile2))
+	CALL log(
+			1, SFMT("Report Started, preview=%1 output=%2 file=%3", m_report_preview, m_report_output, m_report_outFile2))
 	RETURN l_handler
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+--
+FUNCTION rpt_outputAsk(l_rptName STRING) RETURNS BOOLEAN
+	DEFINE l_report STRING
+	DEFINE l_reports base.StringTokenizer
+	DEFINE l_cb ui.ComboBox
+	LET l_reports = base.StringTokenizer.create(l_rptName,",")
+	LET m_report = NULL
+	OPEN WINDOW rpt_output WITH FORM "rpt_settings"
+	LET l_cb = ui.ComboBox.forName("m_report")
+	WHILE l_reports.hasMoreTokens()
+		LET l_report = l_reports.nextToken().trim()
+		IF m_report IS NULL THEN LET m_report = l_report END IF
+		CALL l_cb.addItem(l_report, l_report)
+	END WHILE
+
+	INPUT m_report, m_report_output, m_report_preview, m_report_outFile2
+	 FROM m_report, m_report_output, m_report_preview, m_report_file ATTRIBUTES(UNBUFFERED, WITHOUT DEFAULTS)
+		AFTER FIELD m_report_output
+			IF m_report_output = "SVG" THEN LET m_report_preview = TRUE END IF
+	END INPUT
+	CLOSE WINDOW rpt_output
+	IF int_flag THEN RETURN FALSE END IF
+	RETURN TRUE
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 --
@@ -242,15 +275,15 @@ FUNCTION report_finish()
 			IF l_remoteDir.getIndexOf("\\", 1) > 0 THEN
 				LET l_remoteFile = SFMT("%1\\%2", l_remoteDir, l_rptName)
 			ELSE
-				LET l_remoteFile = os.Path.join("/tmp",l_rptName)
+				LET l_remoteFile = os.Path.join("/tmp", l_rptName)
 			END IF
 			TRY
-				CALL log(1,SFMT("putFile %1 to %2", m_report_outFile2, l_remoteFile))
+				CALL log(1, SFMT("putFile %1 to %2", m_report_outFile2, l_remoteFile))
 				CALL fgl_putfile(m_report_outFile2, l_remoteFile)
 			CATCH
-				CALL log(0,SFMT("Failed %1 %2", STATUS, err_get(STATUS)))
+				CALL log(0, SFMT("Failed %1 %2", STATUS, err_get(STATUS)))
 			END TRY
 		END IF
 	END IF
-	CALL log(1,"Report Finished")
+	CALL log(1, "Report Finished")
 END FUNCTION

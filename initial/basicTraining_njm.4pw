@@ -98,6 +98,7 @@
         <File compilerOptions="--build-rdd" filePath="src/stk_mnt.4gl"/>
         <File filePath="src/stk_mnt.per"/>
         <File filePath="etc/stock1.4rp"/>
+        <File filePath="etc/stock2.4rp"/>
       </Application>
       <Application binaryName="wscli" id="332484385" label="wscli">
         <Configuration id="-927888737" label="Configuration"/>
@@ -124,6 +125,7 @@
     <Library binaryName="Library" dependencies="1986,-2072896198" id="14000" label="Library">
       <File filePath="src/lib.4gl"/>
       <File filePath="src/lookup.4gl"/>
+      <File filePath="src/rpt_settings.per"/>
       <File filePath="src/schema.inc"/>
     </Library>
     <Group id="1358016109" label="Utils">

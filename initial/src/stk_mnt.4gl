@@ -253,7 +253,8 @@ FUNCTION doReport()
 		IF l_row = 1 THEN
 			LET l_rpt_started = TRUE
 
-			LET l_handler = lib.report_setup("stock1")
+			LET l_handler = lib.report_setup("stock1, stock2")
+			IF l_handler IS NULL THEN RETURN END IF
 			START REPORT rpt1 TO XML HANDLER l_handler
 
 		END IF
@@ -266,7 +267,7 @@ FUNCTION doReport()
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 REPORT rpt1(l_row INT, l_stk RECORD LIKE stock.*)
-	DEFINE l_rptTitle STRING = "Stock Report #1"
+	DEFINE l_rptTitle STRING = "Stock Report"
 	DEFINE l_today    DATE
 	DEFINE l_cat_desc LIKE stock_cat.cat_name
 

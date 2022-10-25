@@ -259,6 +259,7 @@ FUNCTION doReport()
 			LET l_rpt_started = TRUE
 
 			LET l_handler = lib.report_setup("cust1")
+			IF l_handler IS NULL THEN RETURN END IF
 			START REPORT rpt1 TO XML HANDLER l_handler
 
 		END IF
