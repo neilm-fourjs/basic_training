@@ -92,7 +92,7 @@ LABEL sld  : long_desc, TEXT=%"Long Description:";
 LABEL sim  : img_url, TEXT=%"Image URI:";
 
 f01 = stock.stock_code, UPSHIFT, NOT NULL, REQUIRED, PLACEHOLDER="A unique id", TABINDEX=1;
-f02 = stock.stock_cat;
+COMBOBOX f02 = stock.stock_cat, NOT NULL, INITIALIZER=setCombo;
 f03 = stock.description, STYLE="big bold";
 
 f04 = stock.pack_flag;

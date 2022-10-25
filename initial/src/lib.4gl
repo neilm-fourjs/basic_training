@@ -287,3 +287,16 @@ FUNCTION report_finish()
 	END IF
 	CALL log(1, "Report Finished")
 END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+--
+FUNCTION setCombo(l_cb ui.ComboBox)
+	DEFINE l_key STRING
+	DEFINE l_value STRING
+	CASE l_cb.getColumnName()
+		WHEN "stock_cat"
+			DECLARE stk_cat_cur CURSOR FOR SELECT catid, cat_name FROM stock_cat
+			FOREACH stk_cat_cur INTO l_key, l_value
+				CALL l_cb.addItem(l_key.trim(), l_value.trim())
+			END FOREACH
+	END CASE
+END FUNCTION
