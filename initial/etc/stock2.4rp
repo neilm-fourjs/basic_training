@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report:Report xmlns:rtl="http://www.4js.com/2004/RTL" xmlns:report="http://www.4js.com/2007/REPORT" xmlns="http://www.4js.com/2004/PXML" gstVersion="40100" version="7.00">
-    <report:Settings RWPageWidth="letterwidth" RWPageLength="letterlength" RWLeftMargin="0.5inch" RWTopMargin="0.5inch" RWRightMargin="0.5inch" RWBottomMargin="0.5inch">
+    <report:Settings RWPageWidth="letterlength" RWPageLength="letterwidth" RWLeftMargin="0.5inch" RWTopMargin="0.5inch" RWRightMargin="0.5inch" RWBottomMargin="0.5inch">
         <report:FormatList>
             <report:Format-SVG/>
             <report:Format-PDF/>
@@ -14,7 +14,7 @@
             <rtl:match name="Report" nameConstraint="Report" minOccurs="1" maxOccurs="1">
                 <rtl:match name="FirstPageHeader" nameConstraint="FirstPageHeader" minOccurs="0" maxOccurs="1"/>
                 <rtl:match name="Group stock_cat" nameConstraint="Group" minOccurs="0" maxOccurs="unbounded">
-                    <MINIPAGE name="Page Root" width="max" length="max" fontName="Roboto" fontSize="14">
+                    <MINIPAGE name="Page Root" width="max" length="max" fontName="Roboto" fontSize="16">
                         <LAYOUTNODE name="Page Header" width="max" length="min" port="anyPageHeader">
                             <MINIPAGE name="StripeLayouter3" width="min" length="max" layoutDirection="leftToRight">
                                 <rtl:input-variable name="l_rptTitle" type="FGLString" expectedLocation="expectedBefore"/>

@@ -9,11 +9,11 @@ DEFINE m_log_file         STRING
 DEFINE m_log              base.Channel
 
 -- Report Settings
-PUBLIC DEFINE m_report          STRING
-PUBLIC DEFINE m_report_ask      BOOLEAN = TRUE
-PUBLIC DEFINE m_report_preview  BOOLEAN = TRUE
-PUBLIC DEFINE m_report_output   STRING = "SVG"
-PUBLIC DEFINE m_report_outFile  STRING -- file name to use if preview = false
+PUBLIC DEFINE m_report         STRING
+PUBLIC DEFINE m_report_ask     BOOLEAN = TRUE
+PUBLIC DEFINE m_report_preview BOOLEAN = TRUE
+PUBLIC DEFINE m_report_output  STRING = "SVG"
+PUBLIC DEFINE m_report_outFile STRING -- file name to use if preview = false
 
 --------------------------------------------------------------------------------------------------------------
 -- Connect to the default database.
@@ -202,8 +202,10 @@ FUNCTION report_setup(l_rptName STRING) RETURNS(om.SaxDocumentHandler)
 --    	CALL greruntime.fgl_report_configureDistributedProcessing("localhost", 6299)
 --	RUN "fglWrt -a info"
 	LET m_report = l_rptName
-	IF m_report_ask OR l_rptName.getIndexOf(",",1) > 0 THEN
-		IF NOT rpt_outputAsk(l_rptName) THEN RETURN NULL END IF
+	IF m_report_ask OR l_rptName.getIndexOf(",", 1) > 0 THEN
+		IF NOT rpt_outputAsk(l_rptName: l_rptName) THEN
+			RETURN NULL
+		END IF
 	END IF
 	IF NOT greruntime.fgl_report_loadCurrentSettings(SFMT("%1.4rp", m_report)) THEN
 		EXIT PROGRAM
@@ -211,11 +213,23 @@ FUNCTION report_setup(l_rptName STRING) RETURNS(om.SaxDocumentHandler)
 	CALL greruntime.fgl_report_selectDevice(m_report_output)
 	CALL greruntime.fgl_report_selectPreview(m_report_preview)
 
+	IF m_report_output = "PDF" THEN
+		CALL fgl_report_configurePDFDevice(
+				fontDirectory: "~/.fonts", antialiasFonts: TRUE, antialiasShapes: TRUE, monochrome: FALSE, fromPage: NULL,
+				toPage: NULL)
+		CALL fgl_report_configurePDFFontEmbedding( preferUnicodeEncoding: TRUE )
+	END IF
+	IF m_report_output = "XLS" THEN
+		CALL fgl_report_configureXLSDevice(
+				fromPage: NULL, toPage: NULL, removeWhitespace: TRUE, ignoreRowAlignment: TRUE, ignoreColumnAlignment: FALSE,
+				removeBackgroundImages: TRUE, mergePages: TRUE)
+	END IF
+
 	IF NOT m_report_preview AND m_report_outFile IS NOT NULL THEN
 		CALL greruntime.fgl_report_setOutputFileName(m_report_outFile)
 	END IF
 
-	IF fgl_getEnv("GREDEBUG") = "TRUE" THEN
+	IF m_report_output = "XML" THEN
 		LET l_handler = greruntime.fgl_report_createProcessLevelDataFile(SFMT("%1.xml", m_report))
 	ELSE
 		LET l_handler = greruntime.fgl_report_commitCurrentSettings()
@@ -224,28 +238,28 @@ FUNCTION report_setup(l_rptName STRING) RETURNS(om.SaxDocumentHandler)
 		CALL fgl_winMessage("Error", SFMT("Report Initialization for '%1' failed!", l_rptName), "exclamation")
 		EXIT PROGRAM 1
 	END IF
-	CALL log(
-			1, SFMT("Report Started, preview=%1 output=%2 file=%3", m_report_preview, m_report_output, m_report_outFile))
+	CALL log(1, SFMT("Report Started, preview=%1 output=%2 file=%3", m_report_preview, m_report_output, m_report_outFile))
 	RETURN l_handler
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 --
 FUNCTION rpt_outputAsk(l_rptName STRING) RETURNS BOOLEAN
-	DEFINE l_report STRING
+	DEFINE l_report  STRING
 	DEFINE l_reports base.StringTokenizer
-	DEFINE l_cb ui.ComboBox
-	LET l_reports = base.StringTokenizer.create(l_rptName,",")
-	LET m_report = NULL
+	DEFINE l_cb      ui.ComboBox
+	LET l_reports = base.StringTokenizer.create(l_rptName, ",")
+	LET m_report  = NULL
 	OPEN WINDOW rpt_output WITH FORM "rpt_settings"
 	LET l_cb = ui.ComboBox.forName("m_report")
 	WHILE l_reports.hasMoreTokens()
 		LET l_report = l_reports.nextToken().trim()
-		IF m_report IS NULL THEN LET m_report = l_report END IF
+		IF m_report IS NULL THEN
+			LET m_report = l_report
+		END IF
 		CALL l_cb.addItem(l_report, l_report)
 	END WHILE
 
-	INPUT BY NAME m_report, m_report_output, m_report_preview, m_report_outFile
-	 ATTRIBUTES(UNBUFFERED, WITHOUT DEFAULTS)
+	INPUT BY NAME m_report, m_report_output, m_report_preview, m_report_outFile ATTRIBUTES(UNBUFFERED, WITHOUT DEFAULTS)
 		BEFORE INPUT
 			CALL DIALOG.setFieldActive("m_report_outfile", NOT m_report_preview)
 		ON CHANGE m_report_output
@@ -253,12 +267,14 @@ FUNCTION rpt_outputAsk(l_rptName STRING) RETURNS BOOLEAN
 				LET m_report_preview = TRUE
 				CALL DIALOG.setFieldActive("m_report_outfile", NOT m_report_preview)
 			END IF
-			LET m_report_outFile = report_fileName( m_report_outFile )
+			LET m_report_outFile = report_fileName(m_report_outFile)
 		ON CHANGE m_report_preview
 			CALL DIALOG.setFieldActive("m_report_outfile", NOT m_report_preview)
 	END INPUT
 	CLOSE WINDOW rpt_output
-	IF int_flag THEN RETURN FALSE END IF
+	IF int_flag THEN
+		RETURN FALSE
+	END IF
 	RETURN TRUE
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
@@ -270,7 +286,7 @@ FUNCTION report_fileName(l_name STRING) RETURNS STRING
 	ELSE
 		LET l_newName = m_report
 	END IF
-	LET l_newName = SFMT("%1.%2",l_newName,m_report_output.toLowerCase())
+	LET l_newName = SFMT("%1.%2", l_newName, m_report_output.toLowerCase())
 	RETURN l_newName
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
@@ -304,7 +320,7 @@ END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 --
 FUNCTION setCombo(l_cb ui.ComboBox)
-	DEFINE l_key STRING
+	DEFINE l_key   STRING
 	DEFINE l_value STRING
 	CASE l_cb.getColumnName()
 		WHEN "stock_cat"

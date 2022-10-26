@@ -250,7 +250,7 @@ FUNCTION doReport()
 		END IF
 		LET l_row += 1
 		IF l_row = 1 THEN
-			LET l_handler = lib.report_setup("stock1, stock2")
+			LET l_handler = lib.report_setup("stock0, stock1, stock2, stkxls")
 			IF l_handler IS NULL THEN RETURN END IF
 			LET l_rpt_started = TRUE
 			START REPORT rpt1 TO XML HANDLER l_handler
@@ -268,6 +268,7 @@ REPORT rpt1(l_row INT, l_stk RECORD LIKE stock.*)
 	DEFINE l_today    DATE
 	DEFINE l_cat_desc LIKE stock_cat.cat_name
 	DEFINE l_cat_row  SMALLINT
+	DEFINE l_tot_free_stock INT
 
 	ORDER EXTERNAL BY l_stk.stock_cat
 
@@ -283,10 +284,12 @@ REPORT rpt1(l_row INT, l_stk RECORD LIKE stock.*)
 				LET l_cat_desc = "Not Found!"
 			END IF
 			LET l_cat_row = 0
+			LET l_tot_free_stock = 0
 			PRINT l_cat_desc
 
 		ON EVERY ROW
 			LET l_cat_row += 1
-			PRINT l_row, l_cat_row, l_stk.*
+			LET l_tot_free_stock += l_stk.free_stock
+			PRINT l_row, l_cat_row, l_tot_free_stock, l_stk.*
 
 END REPORT
