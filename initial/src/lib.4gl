@@ -14,7 +14,6 @@ PUBLIC DEFINE m_report_ask      BOOLEAN = TRUE
 PUBLIC DEFINE m_report_preview  BOOLEAN = TRUE
 PUBLIC DEFINE m_report_output   STRING = "SVG"
 PUBLIC DEFINE m_report_outFile  STRING -- file name to use if preview = false
-PUBLIC DEFINE m_report_outFile2 STRING -- actual output file name if preview = false
 
 --------------------------------------------------------------------------------------------------------------
 -- Connect to the default database.
@@ -211,14 +210,9 @@ FUNCTION report_setup(l_rptName STRING) RETURNS(om.SaxDocumentHandler)
 	END IF
 	CALL greruntime.fgl_report_selectDevice(m_report_output)
 	CALL greruntime.fgl_report_selectPreview(m_report_preview)
-	LET m_report_outFile2 = NULL
-	IF NOT m_report_preview THEN
-		IF m_report_outFile IS NULL THEN
-			LET m_report_outFile2 = SFMT("%1.pdf", m_report)
-		ELSE
-			LET m_report_outFile2 = m_report_outFile
-		END IF
-		CALL greruntime.fgl_report_setOutputFileName(m_report_outFile2)
+
+	IF NOT m_report_preview AND m_report_outFile IS NOT NULL THEN
+		CALL greruntime.fgl_report_setOutputFileName(m_report_outFile)
 	END IF
 
 	IF fgl_getEnv("GREDEBUG") = "TRUE" THEN
@@ -231,7 +225,7 @@ FUNCTION report_setup(l_rptName STRING) RETURNS(om.SaxDocumentHandler)
 		EXIT PROGRAM 1
 	END IF
 	CALL log(
-			1, SFMT("Report Started, preview=%1 output=%2 file=%3", m_report_preview, m_report_output, m_report_outFile2))
+			1, SFMT("Report Started, preview=%1 output=%2 file=%3", m_report_preview, m_report_output, m_report_outFile))
 	RETURN l_handler
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
@@ -250,10 +244,18 @@ FUNCTION rpt_outputAsk(l_rptName STRING) RETURNS BOOLEAN
 		CALL l_cb.addItem(l_report, l_report)
 	END WHILE
 
-	INPUT m_report, m_report_output, m_report_preview, m_report_outFile2
-	 FROM m_report, m_report_output, m_report_preview, m_report_file ATTRIBUTES(UNBUFFERED, WITHOUT DEFAULTS)
-		AFTER FIELD m_report_output
-			IF m_report_output = "SVG" THEN LET m_report_preview = TRUE END IF
+	INPUT BY NAME m_report, m_report_output, m_report_preview, m_report_outFile
+	 ATTRIBUTES(UNBUFFERED, WITHOUT DEFAULTS)
+		BEFORE INPUT
+			CALL DIALOG.setFieldActive("m_report_outfile", NOT m_report_preview)
+		ON CHANGE m_report_output
+			IF m_report_output = "SVG" THEN
+				LET m_report_preview = TRUE
+				CALL DIALOG.setFieldActive("m_report_outfile", NOT m_report_preview)
+			END IF
+			LET m_report_outFile = report_fileName( m_report_outFile )
+		ON CHANGE m_report_preview
+			CALL DIALOG.setFieldActive("m_report_outfile", NOT m_report_preview)
 	END INPUT
 	CLOSE WINDOW rpt_output
 	IF int_flag THEN RETURN FALSE END IF
@@ -261,13 +263,25 @@ FUNCTION rpt_outputAsk(l_rptName STRING) RETURNS BOOLEAN
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 --
+FUNCTION report_fileName(l_name STRING) RETURNS STRING
+	DEFINE l_newName STRING
+	IF l_name IS NOT NULL THEN
+		LET l_newName = os.Path.rootName(l_name)
+	ELSE
+		LET l_newName = m_report
+	END IF
+	LET l_newName = SFMT("%1.%2",l_newName,m_report_output.toLowerCase())
+	RETURN l_newName
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+--
 FUNCTION report_finish()
 	DEFINE l_rptName    STRING
 	DEFINE l_remoteFile STRING
 	DEFINE l_remoteDir  STRING
-	IF NOT m_report_preview AND m_report_outFile2 IS NOT NULL THEN
-		LET l_rptName = os.Path.baseName(m_report_outFile2)
-		IF os.Path.exists(m_report_outFile2) THEN
+	IF NOT m_report_preview AND m_report_outFile IS NOT NULL THEN
+		LET l_rptName = os.Path.baseName(m_report_outFile)
+		IF os.Path.exists(m_report_outFile) THEN
 			CALL ui.Interface.frontCall("standard", "getenv", ["TEMP"], [l_remoteDir])
 			IF l_remoteDir IS NULL THEN
 				LET l_remoteDir = "."
@@ -278,8 +292,8 @@ FUNCTION report_finish()
 				LET l_remoteFile = os.Path.join("/tmp", l_rptName)
 			END IF
 			TRY
-				CALL log(1, SFMT("putFile %1 to %2", m_report_outFile2, l_remoteFile))
-				CALL fgl_putfile(m_report_outFile2, l_remoteFile)
+				CALL log(1, SFMT("putFile %1 to %2", m_report_outFile, l_remoteFile))
+				CALL fgl_putfile(m_report_outFile, l_remoteFile)
 			CATCH
 				CALL log(0, SFMT("Failed %1 %2", STATUS, err_get(STATUS)))
 			END TRY
