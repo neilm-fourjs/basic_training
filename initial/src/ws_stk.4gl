@@ -78,7 +78,7 @@ END FUNCTION
 --------------------------------------------------------------------------------------
 -- Return a stock item
 PUBLIC FUNCTION get(stockCode STRING ATTRIBUTE(WSParam))
-		ATTRIBUTES(WSGet, WSPath = "/get/{stockCode}", WSDescription = "Returns requested stock item",
+		ATTRIBUTES(WSGet, WSPath = "/getStock/{stockCode}", WSDescription = "Returns requested stock item",
 				WSThrows = "404:@wsStockError")
 		RETURNS t_stk
 	DEFINE l_stk t_stk

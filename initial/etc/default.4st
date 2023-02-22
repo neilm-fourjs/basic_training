@@ -40,6 +40,13 @@
 		<StyleAttribute name="windowListVisible" value="yes"/>
 	</Style>
 
+	<Style name="UserInterface.sm"> <!-- StartMenu -->
+		<StyleAttribute name="desktopMultiWindow" value="no"/>
+		<StyleAttribute name="browserMultiPage" value="no"/>
+		<StyleAttribute name="applicationListVisible" value="no"/>
+		<StyleAttribute name="windowListVisible" value="no"/>
+	</Style>
+
 	<Style name="Image">
 		<StyleAttribute name="border" value="none"/>
 	</Style>
@@ -60,7 +67,10 @@
      <StyleAttribute name="fontSize" value="2em" />
   </Style>
 
-
+  <Style name="Window.menu">
+		<StyleAttribute name="startMenuPosition" value="tree"/>
+		<StyleAttribute name="tabbedContainer" value="yes" />
+  </Style>
 
 <!-- Default Styles -->
   <Style name="Window">

@@ -52,11 +52,15 @@ FUNCTION init() RETURNS()
 -- don't bother switch MDI setting unless we are passed M or S
 	IF base.Application.getArgument(1) = "M" THEN
 		LET m_mdi = TRUE
-		CALL switch_mdi(m_mdi)
+		CALL switch_mdi("mdi")
+	END IF
+	IF base.Application.getArgument(1) = "m" THEN
+		LET m_mdi = TRUE
+		CALL switch_mdi("sm") -- startMenu
 	END IF
 	IF base.Application.getArgument(1) = "S" THEN
 		LET m_mdi = FALSE
-		CALL switch_mdi(m_mdi)
+		CALL switch_mdi("sdi")
 	END IF
 	LET m_client = ui.Interface.getFrontEndName()
 	CALL log(
@@ -67,7 +71,7 @@ FUNCTION init() RETURNS()
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 -- change the style name to handle MDI / SDI styles
-FUNCTION switch_mdi(l_mdi BOOLEAN)
+FUNCTION switch_mdi(l_mdi STRING)
 	DEFINE n, l_n_ui, n_sl om.DomNode
 	DEFINE l_nl            om.NodeList
 	DEFINE l_style         STRING
@@ -80,7 +84,7 @@ FUNCTION switch_mdi(l_mdi BOOLEAN)
 --	CALL n_sl.writeXml("sl_1.xml")
 
 -- find the style attributes we need to copy
-	LET l_style = SFMT("//Style[@name='UserInterface.%1']/StyleAttribute", IIF(l_mdi, "mdi", "sdi"))
+	LET l_style = SFMT("//Style[@name='UserInterface.%1']/StyleAttribute", l_mdi)
 	LET l_nl    = ui.Interface.getRootNode().selectByPath(l_style)
 	IF l_nl.getLength() = 0 THEN
 		CALL log(0, SFMT("Failed to find style attributes for %1", l_style))

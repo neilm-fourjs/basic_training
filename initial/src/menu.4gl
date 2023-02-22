@@ -8,6 +8,8 @@ MAIN
 	DEFINE x     SMALLINT
 	DEFINE l_cmd STRING
 
+	RUN "env | sort > /tmp/env.gas"
+
 	CALL ui.Interface.setText("Menu")
 	CALL ui.Interface.setImage("fa-navicon")
 
@@ -27,6 +29,10 @@ MAIN
 	DISPLAY FORM f
 	CALL ui.Window.getCurrent().setText(SFMT("Menu - %1", TODAY))
 	CALL ui.Window.getCurrent().setImage("fa-navicon")
+
+	IF base.Application.getArgument(1) = "m" THEN
+		CALL buildStartMenu()
+	END IF
 
 	CALL getMenu("main")
 	DISPLAY ARRAY m_menu TO menu.* ATTRIBUTE(UNBUFFERED, FOCUSONFIELD, CANCEL = FALSE, ACCEPT = FALSE)
@@ -91,4 +97,34 @@ FUNCTION getMenu(l_name STRING) RETURNS()
 		LET m_menu[y].m_img           = "fa-arrow-left"
 	END IF
 	LET m_menu[y := y + 1].m_text = NULL -- hidden last row.
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+FUNCTION buildStartMenu()
+	DEFINE l_sm_root om.DomNode
+
+	LET l_sm_root = ui.Interface.getRootNode()
+	LET l_sm_root = l_sm_root.createChild("StartMenu")
+
+	CALL buildStartMenuAdd(l_sm_root, "main" )
+
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+FUNCTION buildStartMenuAdd( l_sm_menu om.DomNode, l_menu STRING )
+	DEFINE x SMALLINT
+	DEFINE l_sm_item om.DomNode
+	FOR x = 1 TO m_menus.getLength()
+		IF m_menus[x].m_name = l_menu THEN
+			IF m_menus[x].m_type = "M" THEN
+				LET l_sm_item = l_sm_menu.createChild("StartMenuGroup")
+				CALL l_sm_item.setAttribute("text", m_menus[x].m_text)
+				CALL buildStartMenuAdd(l_sm_item, m_menus[x].m_child )
+			END IF
+			IF m_menus[x].m_type = "F" THEN
+				LET l_sm_item = l_sm_menu.createChild("StartMenuCommand")
+				CALL l_sm_item.setAttribute("text", m_menus[x].m_text)
+				CALL l_sm_item.setAttribute("comment", m_menus[x].m_desc)
+				CALL l_sm_item.setAttribute("exec", SFMT("fglrun %1 %2", m_menus[x].m_cmd, m_menus[x].m_args))
+			END IF
+		END IF
+	END FOR
 END FUNCTION

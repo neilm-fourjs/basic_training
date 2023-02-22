@@ -9,12 +9,14 @@ DEFINE m_curRow SMALLINT
 DEFINE m_where  STRING
 MAIN
 	DEFINE l_cust        RECORD LIKE customers.*
+	DEFINE l_email       LIKE customers.email
 	DEFINE l_new         BOOLEAN = FALSE
 	DEFINE l_dataChanged BOOLEAN = FALSE
 	DEFINE l_mess        STRING
 	DEFINE l_accept      BOOLEAN = FALSE
 	DEFINE l_dirty       BOOLEAN = FALSE
 	DEFINE l_mode        CHAR(1)
+
 	CALL lib.init()
 
 	CALL lib.db_connect()
@@ -26,6 +28,8 @@ MAIN
 	OPEN FORM f FROM "cust_mnt"
 	DISPLAY FORM f
 	OPTIONS INPUT WRAP
+
+	CALL ui.Window.getCurrent().setText(SFMT("%1 - %2", TODAY, ui.Window.getCurrent().getText()) )
 
 	LET m_where = " 1=1"
 	CALL getData()
