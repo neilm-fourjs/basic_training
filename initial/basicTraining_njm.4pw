@@ -119,7 +119,7 @@
     </Package>
     <Library binaryName="Databases" id="1986" label="Databases">
       <File filePath="etc/training.4db"/>
-      <File filePath="../../../../../../opt/fourJs/all/my_github/basicTraining_njm/initial/etc/training1.4db"/>
+      <File filePath="etc/training1.4db"/>
     </Library>
     <Library binaryName="etc" id="-2072896198" label="etc">
       <File filePath="etc/bt.xcf"/>
