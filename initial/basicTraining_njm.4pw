@@ -137,7 +137,6 @@
       <Application binaryName="test_menu" id="-403891573" label="test_menu">
         <Configuration commandLineArguments="tcp --command-line &quot;fglrun menu&quot;" id="-239890136" label="Configuration"/>
         <File filePath="test/menu_test1.4gl"/>
-        <File filePath="bin/menu_test1.guilog"/>
       </Application>
     </Group>
     <Group id="1358016109" label="Utils">
