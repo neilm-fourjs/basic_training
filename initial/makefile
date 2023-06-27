@@ -15,7 +15,7 @@ deploy: basicTrainingGar.gar
 
 clean:	
 	find . -name \*.42? -delete
-	rm distbin/*.gar
+	rm -rf distbin/*.gar
 
 src/ws_clistk.4gl:
 	fglrestful -o $@ $(WSSRV)/stk?openapi.json
