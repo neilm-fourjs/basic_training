@@ -1,9 +1,13 @@
 
 WSSRV=http://localhost:8080
 
+export FGLRESOURCEPATH=$(PWD)/etc
+export FGLLDPATH=$(PWD)/bin:$(GREDIR)/lib
+export DBNAME=$(PWD)/etc/training.db
+
 all: src/ws_clistk.4gl basicTrainingGar.gar
 
-basicTrainingGar.gar: 
+basicTrainingGar.gar:
 	gsmake basicTraining_njm.4pw
 
 deploy: basicTrainingGar.gar
@@ -15,3 +19,6 @@ clean:
 
 src/ws_clistk.4gl:
 	fglrestful -o $@ $(WSSRV)/stk?openapi.json
+
+run: 
+	cd bin && fglrun menu M menu_sg
