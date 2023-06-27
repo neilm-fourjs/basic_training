@@ -2,7 +2,7 @@
 WSSRV=http://localhost:8080
 
 export FGLRESOURCEPATH=$(PWD)/etc
-export FGLLDPATH=$(PWD)/bin:$(GREDIR)/lib
+export FGLLDPATH=$(PWD)/bin:$(GREDIR)/lib:$(FGLDIR)/testing_utilities/ggc/lib
 export DBNAME=$(PWD)/etc/training.db
 
 all: src/ws_clistk.4gl basicTrainingGar.gar
